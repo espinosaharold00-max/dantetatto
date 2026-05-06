@@ -368,7 +368,7 @@ export default function AgendaPage() {
                   <div>
                     <Label htmlFor="bodyArea">Zona del cuerpo</Label>
                     <Select
-                      onValueChange={(v) => form.setValue("bodyArea", v)}
+                      onValueChange={(v: string) => form.setValue("bodyArea", v)}
                     >
                       <SelectTrigger className="border-neutral-700 bg-neutral-800">
                         <SelectValue placeholder="Selecciona la zona" />
