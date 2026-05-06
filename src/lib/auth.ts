@@ -57,28 +57,50 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Contraseña", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            console.error("[auth] No credentials provided");
+            return null;
+          }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+          console.log("[auth] Login attempt:", credentials.email);
 
-        if (!user || !user.password) return null;
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
 
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
+          if (!user) {
+            console.error("[auth] User not found:", credentials.email);
+            return null;
+          }
 
-        if (!isValid) return null;
+          if (!user.password) {
+            console.error("[auth] User has no password:", credentials.email);
+            return null;
+          }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          image: user.image,
-        };
+          const isValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+
+          if (!isValid) {
+            console.error("[auth] Invalid password for:", credentials.email);
+            return null;
+          }
+
+          console.log("[auth] Login success:", credentials.email, "role:", user.role);
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            image: user.image,
+          };
+        } catch (error) {
+          console.error("[auth] Error in authorize:", error);
+          return null;
+        }
       },
     }),
   ],
