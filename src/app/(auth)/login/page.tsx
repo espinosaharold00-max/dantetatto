@@ -26,18 +26,26 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
 
-    if (result?.error) {
-      setError("Email o contraseña incorrectos");
+      if (result?.error) {
+        setError("Email o contraseña incorrectos");
+        setLoading(false);
+      } else if (result?.ok) {
+        router.push("/");
+        router.refresh();
+      } else {
+        setError("Error inesperado al iniciar sesión");
+        setLoading(false);
+      }
+    } catch {
+      setError("Error de conexión con el servidor");
       setLoading(false);
-    } else {
-      router.push("/");
-      router.refresh();
     }
   };
 
