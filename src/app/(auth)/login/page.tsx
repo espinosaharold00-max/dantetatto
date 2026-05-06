@@ -34,7 +34,7 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError("Email o contraseña incorrectos");
+        setError(`Error: ${result.error} | status: ${result.status} | url: ${result.url}`);
         setLoading(false);
       } else if (result?.ok) {
         router.push("/");
