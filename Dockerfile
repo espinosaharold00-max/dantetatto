@@ -14,6 +14,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN mkdir -p public
 RUN npx prisma generate
+RUN npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > scripts/init.sql
 RUN npm run build
 
 FROM base AS runner
@@ -26,20 +27,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Prisma: esquema + cliente generado + CLI para db push
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-
-# Dependencias para seed y prisma config
-COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
-COPY --from=builder /app/node_modules/dotenv ./node_modules/dotenv
-
-# Scripts de deploy
+# Scripts de deploy (init.sql se genera en build time)
 COPY --from=builder /app/scripts ./scripts
 RUN chmod +x scripts/start.sh
+
+# bcryptjs para el seed (pg ya viene en standalone)
+COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
 
 USER nextjs
 EXPOSE 3000

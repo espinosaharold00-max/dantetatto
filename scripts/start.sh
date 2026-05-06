@@ -1,12 +1,11 @@
 #!/bin/sh
 set -e
 
-echo "=== [deploy] Sincronizando esquema de base de datos ==="
-node node_modules/prisma/build/index.js db push --skip-generate
-echo "=== [deploy] Tablas sincronizadas ==="
+echo "=== [deploy] Inicializando base de datos ==="
+node scripts/init-db.mjs
 
-echo "=== [deploy] Ejecutando seed (datos iniciales) ==="
-node scripts/seed.mjs || echo "[deploy] Seed ya ejecutado o sin cambios"
+echo "=== [deploy] Ejecutando seed ==="
+node scripts/seed.mjs || echo "[deploy] Seed completado"
 
 echo "=== [deploy] Iniciando servidor ==="
 exec node server.js

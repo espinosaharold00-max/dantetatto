@@ -1,118 +1,89 @@
-import { PrismaClient } from "@prisma/client";
+import pg from "pg";
 import bcrypt from "bcryptjs";
+import { randomUUID } from "crypto";
 
-const prisma = new PrismaClient();
+const { Client } = pg;
 
 async function main() {
-  const adminExists = await prisma.user.findUnique({
-    where: { email: "admin@dantetatto.com" },
-  });
+  const client = new Client({ connectionString: process.env.DATABASE_URL });
+  await client.connect();
 
-  if (!adminExists) {
+  const { rows: admin } = await client.query(
+    "SELECT id FROM users WHERE email = $1",
+    ["admin@dantetatto.com"]
+  );
+  if (admin.length === 0) {
     const hash = await bcrypt.hash("admin123456", 12);
-    await prisma.user.create({
-      data: {
-        name: "Dante Admin",
-        email: "admin@dantetatto.com",
-        password: hash,
-        role: "ADMIN",
-      },
-    });
-    console.log("[seed] Admin creado: admin@dantetatto.com");
+    await client.query(
+      'INSERT INTO users (id, name, email, password, role, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, NOW(), NOW())',
+      [randomUUID(), "Dante Admin", "admin@dantetatto.com", hash, "ADMIN"]
+    );
+    console.log("[seed] Admin creado: admin@dantetatto.com / admin123456");
   } else {
-    console.log("[seed] Admin ya existe, sin cambios");
+    console.log("[seed] Admin ya existe");
   }
 
   for (let day = 0; day < 7; day++) {
-    const exists = await prisma.scheduleConfig.findUnique({
-      where: { dayOfWeek: day },
-    });
-    if (!exists) {
-      await prisma.scheduleConfig.create({
-        data: {
-          dayOfWeek: day,
-          startTime: "10:00",
-          endTime: "19:00",
-          slotDuration: 60,
-          isActive: day !== 0,
-        },
-      });
+    const { rows } = await client.query(
+      'SELECT id FROM schedule_config WHERE "dayOfWeek" = $1',
+      [day]
+    );
+    if (rows.length === 0) {
+      await client.query(
+        'INSERT INTO schedule_config (id, "dayOfWeek", "startTime", "endTime", "slotDuration", "isActive", "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())',
+        [randomUUID(), day, "10:00", "19:00", 60, day !== 0]
+      );
     }
   }
   console.log("[seed] Horario configurado");
 
   const products = [
-    {
-      name: "Crema Hidratante para Tatuajes",
-      slug: "crema-hidratante-tatuajes",
-      description: "Crema especializada para la hidratacion y cuidado de tatuajes nuevos y existentes.",
-      price: 35000,
-      category: "cremas",
-      stock: 50,
-      images: [],
-    },
-    {
-      name: "Jabon Antibacterial Suave",
-      slug: "jabon-antibacterial-suave",
-      description: "Jabon neutro antibacterial perfecto para la limpieza de tatuajes frescos.",
-      price: 18000,
-      category: "jabones",
-      stock: 80,
-      images: [],
-    },
-    {
-      name: "Pelicula Protectora Transparente",
-      slug: "pelicula-protectora-transparente",
-      description: "Pelicula transpirable de segunda piel para proteger tu tatuaje.",
-      price: 25000,
-      category: "protectores",
-      stock: 40,
-      images: [],
-    },
-    {
-      name: "Kit Completo de Cuidado",
-      slug: "kit-completo-cuidado",
-      description: "Kit completo con crema hidratante, jabon antibacterial y pelicula protectora.",
-      price: 65000,
-      compareAtPrice: 78000,
-      category: "kits",
-      stock: 25,
-      images: [],
-    },
+    { name: "Crema Hidratante para Tatuajes", slug: "crema-hidratante-tatuajes", desc: "Crema especializada para tatuajes.", price: 35000, cat: "cremas", stock: 50 },
+    { name: "Jabon Antibacterial Suave", slug: "jabon-antibacterial-suave", desc: "Jabon neutro antibacterial.", price: 18000, cat: "jabones", stock: 80 },
+    { name: "Pelicula Protectora", slug: "pelicula-protectora-transparente", desc: "Pelicula transpirable de segunda piel.", price: 25000, cat: "protectores", stock: 40 },
+    { name: "Kit Completo de Cuidado", slug: "kit-completo-cuidado", desc: "Kit completo con crema, jabon y pelicula.", price: 65000, cat: "kits", stock: 25 },
   ];
 
   for (const p of products) {
-    const exists = await prisma.product.findUnique({ where: { slug: p.slug } });
-    if (!exists) {
-      await prisma.product.create({ data: p });
+    const { rows } = await client.query(
+      "SELECT id FROM products WHERE slug = $1",
+      [p.slug]
+    );
+    if (rows.length === 0) {
+      await client.query(
+        'INSERT INTO products (id, name, slug, description, price, category, stock, images, "isActive", "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, ARRAY[]::text[], true, NOW(), NOW())',
+        [randomUUID(), p.name, p.slug, p.desc, p.price, p.cat, p.stock]
+      );
     }
   }
   console.log("[seed] Productos verificados");
 
-  const postSlug = "cuidados-basicos-tatuaje-nuevo";
-  const postExists = await prisma.post.findUnique({ where: { slug: postSlug } });
-  if (!postExists) {
-    await prisma.post.create({
-      data: {
-        title: "Cuidados basicos para tu tatuaje nuevo",
-        slug: postSlug,
-        content: "<h2>Los primeros dias son cruciales</h2><p>Tu nuevo tatuaje necesita cuidados especificos para sanar correctamente.</p>",
-        excerpt: "Guia completa para cuidar tu tatuaje nuevo.",
-        category: "cuidados",
-        status: "PUBLISHED",
-        publishedAt: new Date(),
-        authorName: "Dante Tatto",
-      },
-    });
+  const { rows: post } = await client.query(
+    "SELECT id FROM posts WHERE slug = $1",
+    ["cuidados-basicos-tatuaje-nuevo"]
+  );
+  if (post.length === 0) {
+    await client.query(
+      'INSERT INTO posts (id, title, slug, content, excerpt, category, status, "publishedAt", "authorName", "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), $8, NOW(), NOW())',
+      [
+        randomUUID(),
+        "Cuidados basicos para tu tatuaje nuevo",
+        "cuidados-basicos-tatuaje-nuevo",
+        "<h2>Los primeros dias son cruciales</h2><p>Tu nuevo tatuaje necesita cuidados especificos para sanar correctamente.</p>",
+        "Guia completa para cuidar tu tatuaje nuevo.",
+        "cuidados",
+        "PUBLISHED",
+        "Dante Tatto",
+      ]
+    );
   }
   console.log("[seed] Post verificado");
 
   console.log("[seed] Completado");
+  await client.end();
 }
 
-main()
-  .catch((e) => {
-    console.error("[seed] Error:", e.message);
-    process.exit(0);
-  })
-  .finally(() => prisma.$disconnect());
+main().catch((e) => {
+  console.error("[seed] Error:", e.message);
+  process.exit(0);
+});
