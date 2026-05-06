@@ -42,11 +42,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-brand-dark px-4">
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
         <CardHeader className="text-center">
-          <Link href="/" className="mb-2 text-2xl font-bold text-white">
-            DANTE TATTO
+          <Link href="/" className="mb-2 block">
+            <span className="text-2xl font-black text-brand-amber">DANTETATTOO</span>
+            <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-500">Cat & Co — Tattoo Stuff</span>
           </Link>
           <CardTitle className="text-lg text-neutral-300">
             Iniciar sesión
@@ -92,7 +93,7 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full bg-white text-black hover:bg-neutral-200"
+              className="w-full bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
               disabled={loading}
             >
               {loading ? "Entrando..." : "Iniciar sesión"}
@@ -111,7 +112,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-neutral-400">
             ¿No tienes cuenta?{" "}
-            <Link href="/registro" className="text-white underline">
+            <Link href="/registro" className="text-brand-amber underline">
               Regístrate
             </Link>
           </p>

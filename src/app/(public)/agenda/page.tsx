@@ -136,7 +136,10 @@ export default function AgendaPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-white">Agenda tu cita</h1>
+        <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-amber/60">
+          Cat & Co — Tattoo Stuff
+        </p>
+        <h1 className="text-4xl font-black text-white">Agenda tu cita</h1>
         <p className="mt-2 text-neutral-400">
           Selecciona el tipo de cita, elige fecha y hora, y completa tus datos
         </p>
@@ -149,7 +152,7 @@ export default function AgendaPage() {
             key={s}
             className={`h-2 w-16 rounded-full ${
               (["type", "date", "info", "confirm"] as Step[]).indexOf(step) >= i
-                ? "bg-white"
+                ? "bg-brand-amber"
                 : "bg-neutral-800"
             }`}
           />
@@ -159,7 +162,7 @@ export default function AgendaPage() {
       {step === "success" ? (
         <Card className="border-neutral-800 bg-neutral-900">
           <CardContent className="flex flex-col items-center py-12">
-            <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
+            <CheckCircle className="mb-4 h-16 w-16 text-brand-amber" />
             <h2 className="mb-2 text-2xl font-bold text-white">
               ¡Cita registrada!
             </h2>
@@ -191,7 +194,7 @@ export default function AgendaPage() {
                   key={type.value}
                   className={`cursor-pointer border-neutral-800 bg-neutral-900 transition-colors hover:border-neutral-600 ${
                     form.watch("type") === type.value
-                      ? "border-white ring-1 ring-white"
+                      ? "border-brand-amber ring-1 ring-brand-amber"
                       : ""
                   }`}
                   onClick={() => {
@@ -217,7 +220,7 @@ export default function AgendaPage() {
                     if (form.getValues("type")) setStep("date");
                   }}
                   disabled={!form.watch("type")}
-                  className="bg-white text-black hover:bg-neutral-200"
+                  className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
                 >
                   Siguiente
                 </Button>
@@ -277,7 +280,7 @@ export default function AgendaPage() {
                           onClick={() => handleSlotSelect(slot)}
                           className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
                             selectedSlot === slot.startTime
-                              ? "border-white bg-white text-black"
+                              ? "border-brand-amber bg-brand-amber text-brand-dark"
                               : slot.available
                                 ? "border-neutral-700 text-neutral-300 hover:border-neutral-500"
                                 : "cursor-not-allowed border-neutral-800 text-neutral-600 line-through"
@@ -306,7 +309,7 @@ export default function AgendaPage() {
                     if (selectedDate && selectedSlot) setStep("info");
                   }}
                   disabled={!selectedDate || !selectedSlot}
-                  className="bg-white text-black hover:bg-neutral-200"
+                  className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
                 >
                   Siguiente
                 </Button>
@@ -432,7 +435,7 @@ export default function AgendaPage() {
                         form.trigger();
                       }
                     }}
-                    className="bg-white text-black hover:bg-neutral-200"
+                    className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
                   >
                     Revisar y confirmar
                   </Button>
@@ -516,7 +519,7 @@ export default function AgendaPage() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="bg-white text-black hover:bg-neutral-200"
+                    className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
                   >
                     {loading ? "Registrando..." : "Confirmar reserva"}
                   </Button>

@@ -54,11 +54,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-950 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-brand-dark px-4">
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
         <CardHeader className="text-center">
-          <Link href="/" className="mb-2 text-2xl font-bold text-white">
-            DANTE TATTO
+          <Link href="/" className="mb-2 block">
+            <span className="text-2xl font-black text-brand-amber">DANTETATTOO</span>
+            <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-500">Cat & Co — Tattoo Stuff</span>
           </Link>
           <CardTitle className="text-lg text-neutral-300">
             Crear cuenta
@@ -127,7 +128,7 @@ export default function RegisterPage() {
 
             <Button
               type="submit"
-              className="w-full bg-white text-black hover:bg-neutral-200"
+              className="w-full bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
               disabled={loading}
             >
               {loading ? "Creando cuenta..." : "Crear cuenta"}
@@ -136,7 +137,7 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-neutral-400">
             ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-white underline">
+            <Link href="/login" className="text-brand-amber underline">
               Iniciar sesión
             </Link>
           </p>
