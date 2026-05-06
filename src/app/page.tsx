@@ -8,20 +8,24 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 async function getPublicData() {
-  const [reviews, portfolioItems] = await Promise.all([
-    prisma.review.findMany({
-      where: { status: "APPROVED" },
-      include: { user: { select: { name: true, image: true } } },
-      orderBy: { createdAt: "desc" },
-      take: 6,
-    }),
-    prisma.portfolioItem.findMany({
-      where: { isActive: true },
-      orderBy: { sortOrder: "asc" },
-      take: 8,
-    }),
-  ]);
-  return { reviews, portfolioItems };
+  try {
+    const [reviews, portfolioItems] = await Promise.all([
+      prisma.review.findMany({
+        where: { status: "APPROVED" },
+        include: { user: { select: { name: true, image: true } } },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+      }),
+      prisma.portfolioItem.findMany({
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+        take: 8,
+      }),
+    ]);
+    return { reviews, portfolioItems };
+  } catch {
+    return { reviews: [], portfolioItems: [] };
+  }
 }
 
 export default async function HomePage() {
