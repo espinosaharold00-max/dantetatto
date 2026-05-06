@@ -1,101 +1,278 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { Star, ArrowRight, Calendar, ShoppingBag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+async function getPublicData() {
+  const [reviews, portfolioItems] = await Promise.all([
+    prisma.review.findMany({
+      where: { status: "APPROVED" },
+      include: { user: { select: { name: true, image: true } } },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    }),
+    prisma.portfolioItem.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+      take: 8,
+    }),
+  ]);
+  return { reviews, portfolioItems };
+}
+
+export default async function HomePage() {
+  const { reviews, portfolioItems } = await getPublicData();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TattooParlor",
+    name: process.env.NEXT_PUBLIC_BUSINESS_NAME || "Dante Tatto",
+    description:
+      "Estudio de tatuaje profesional. Haciendo amigos, no clientes.",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com",
+    telephone: process.env.NEXT_PUBLIC_BUSINESS_PHONE,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: process.env.NEXT_PUBLIC_BUSINESS_ADDRESS,
+      addressLocality: process.env.NEXT_PUBLIC_BUSINESS_CITY,
+      addressRegion: process.env.NEXT_PUBLIC_BUSINESS_STATE,
+      postalCode: process.env.NEXT_PUBLIC_BUSINESS_ZIP,
+      addressCountry: process.env.NEXT_PUBLIC_BUSINESS_COUNTRY || "MX",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: process.env.NEXT_PUBLIC_BUSINESS_LAT,
+      longitude: process.env.NEXT_PUBLIC_BUSINESS_LNG,
+    },
+    image: `${process.env.NEXT_PUBLIC_SITE_URL}/images/og-image.jpg`,
+    priceRange: "$$",
+    aggregateRating:
+      reviews.length > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: (
+              reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+            ).toFixed(1),
+            reviewCount: reviews.length,
+          }
+        : undefined,
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero */}
+      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-neutral-950">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neutral-900 via-neutral-950 to-black" />
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          <h1 className="mb-4 text-5xl font-bold tracking-tight text-white sm:text-7xl">
+            Haciendo amigos,
+            <br />
+            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              no clientes
+            </span>
+          </h1>
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-400 sm:text-xl">
+            Cada tatuaje cuenta una historia. Trabajamos contigo para crear
+            piezas únicas que llevarás con orgullo toda la vida.
+          </p>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/agenda">
+              <Button
+                size="lg"
+                className="gap-2 bg-white text-black hover:bg-neutral-200"
+              >
+                <Calendar className="h-5 w-5" />
+                Agendar cita
+              </Button>
+            </Link>
+            <Link href="/tienda">
+              <Button
+                size="lg"
+                variant="outline"
+                className="gap-2 border-neutral-700 text-neutral-300 hover:bg-neutral-900"
+              >
+                <ShoppingBag className="h-5 w-5" />
+                Tienda
+              </Button>
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* Portfolio */}
+      <section className="bg-neutral-950 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Portfolio
+            </h2>
+            <p className="mt-2 text-neutral-400">
+              Algunos de nuestros trabajos recientes
+            </p>
+          </div>
+
+          <div className="columns-2 gap-4 sm:columns-3 lg:columns-4">
+            {portfolioItems.length > 0
+              ? portfolioItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="mb-4 break-inside-avoid overflow-hidden rounded-lg"
+                  >
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full object-cover transition-transform duration-300 hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                ))
+              : Array.from({ length: 8 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg bg-neutral-900"
+                  >
+                    <span className="text-sm text-neutral-600">
+                      Portfolio {i + 1}
+                    </span>
+                  </div>
+                ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sobre mí */}
+      <section className="border-t border-neutral-800 bg-neutral-900 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-neutral-800">
+              <span className="text-neutral-600">Foto del artista</span>
+            </div>
+            <div>
+              <h2 className="mb-4 text-3xl font-bold text-white">
+                Sobre el artista
+              </h2>
+              <p className="mb-4 text-neutral-400">
+                Con años de experiencia en el arte del tatuaje, cada pieza que
+                creo es una colaboración entre el artista y la persona. Mi
+                filosofía es simple: aquí no tienes citas, tienes encuentros con
+                un amigo.
+              </p>
+              <p className="mb-6 text-neutral-400">
+                Especializado en diversos estilos, desde realismo hasta
+                tradicional, me apasiona transformar tus ideas en arte
+                permanente que refleje tu personalidad y tu historia.
+              </p>
+              <Link href="/sobre-mi">
+                <Button
+                  variant="outline"
+                  className="gap-2 border-neutral-700 text-neutral-300"
+                >
+                  Conocer más
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonios */}
+      <section className="bg-neutral-950 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Lo que dicen nuestros amigos
+            </h2>
+            <p className="mt-2 text-neutral-400">
+              Reseñas reales de personas reales
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.length > 0
+              ? reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="rounded-xl border border-neutral-800 bg-neutral-900 p-6"
+                  >
+                    <div className="mb-3 flex gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i < review.rating
+                              ? "fill-amber-400 text-amber-400"
+                              : "text-neutral-600"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <p className="mb-4 text-sm text-neutral-300">
+                      &quot;{review.comment}&quot;
+                    </p>
+                    <p className="text-sm font-medium text-neutral-400">
+                      — {review.user.name || "Cliente"}
+                    </p>
+                  </div>
+                ))
+              : Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-neutral-800 bg-neutral-900 p-6"
+                  >
+                    <div className="mb-3 flex gap-1">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <Star
+                          key={j}
+                          className="h-4 w-4 fill-amber-400 text-amber-400"
+                        />
+                      ))}
+                    </div>
+                    <p className="mb-4 text-sm text-neutral-300">
+                      &quot;Excelente experiencia. El mejor artista de la zona.
+                      100% recomendado.&quot;
+                    </p>
+                    <p className="text-sm font-medium text-neutral-400">
+                      — Cliente {i + 1}
+                    </p>
+                  </div>
+                ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Final */}
+      <section className="border-t border-neutral-800 bg-neutral-900 py-20">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
+            ¿Listo para tu próximo tatuaje?
+          </h2>
+          <p className="mb-8 text-neutral-400">
+            Agenda tu consulta gratuita y platiquemos sobre tu idea. Sin
+            compromiso, solo buena vibra.
+          </p>
+          <Link href="/agenda">
+            <Button
+              size="lg"
+              className="gap-2 bg-white text-black hover:bg-neutral-200"
+            >
+              <Calendar className="h-5 w-5" />
+              Agendar mi cita
+              <ArrowRight className="h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      <Footer />
+    </>
   );
 }
