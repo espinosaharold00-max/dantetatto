@@ -120,7 +120,7 @@ export default function AdminOrdersPage() {
                     </p>
                     <Select
                       value={order.status}
-                      onValueChange={(v) => updateOrderStatus(order.id, v)}
+                      onValueChange={(v: string | null) => { if (v) updateOrderStatus(order.id, v); }}
                     >
                       <SelectTrigger className="mt-2 w-32 border-neutral-700 bg-neutral-800 text-xs">
                         <SelectValue />

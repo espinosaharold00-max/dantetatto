@@ -116,14 +116,9 @@ export default function AdminProductsPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Productos</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              className="gap-2 bg-white text-black hover:bg-neutral-200"
-              onClick={resetForm}
-            >
+          <DialogTrigger render={<Button className="gap-2 bg-white text-black hover:bg-neutral-200" onClick={resetForm} />}>
               <Plus className="h-4 w-4" />
               Nuevo producto
-            </Button>
           </DialogTrigger>
           <DialogContent className="border-neutral-800 bg-neutral-900">
             <DialogHeader>

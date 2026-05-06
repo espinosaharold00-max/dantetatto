@@ -57,22 +57,16 @@ export function Navbar() {
 
           {session?.user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-neutral-300"
-                >
+              <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="text-neutral-300" />}>
                   <User className="h-5 w-5" />
-                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem className="text-sm font-medium">
                   {session.user.name || session.user.email}
                 </DropdownMenuItem>
                 {isAdmin && (
-                  <DropdownMenuItem asChild>
-                    <Link href="/admin">Panel Admin</Link>
+                  <DropdownMenuItem render={<Link href="/admin" />}>
+                    Panel Admin
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem onClick={() => signOut()}>

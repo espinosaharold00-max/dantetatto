@@ -5,6 +5,8 @@ import { Star, ArrowRight, Calendar, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 async function getPublicData() {
   const [reviews, portfolioItems] = await Promise.all([
     prisma.review.findMany({

@@ -125,14 +125,9 @@ export default function AdminBlogPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-white">Blog</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button
-              className="gap-2 bg-white text-black hover:bg-neutral-200"
-              onClick={resetForm}
-            >
+          <DialogTrigger render={<Button className="gap-2 bg-white text-black hover:bg-neutral-200" onClick={resetForm} />}>
               <Plus className="h-4 w-4" />
               Nuevo post
-            </Button>
           </DialogTrigger>
           <DialogContent className="max-h-[90vh] overflow-y-auto border-neutral-800 bg-neutral-900 sm:max-w-2xl">
             <DialogHeader>
@@ -178,9 +173,9 @@ export default function AdminBlogPage() {
                   <Label>Categoría</Label>
                   <Select
                     value={form.category}
-                    onValueChange={(v) =>
-                      setForm((f) => ({ ...f, category: v }))
-                    }
+                    onValueChange={(v: string | null) => {
+                      if (v) setForm((f) => ({ ...f, category: v }));
+                    }}
                   >
                     <SelectTrigger className="border-neutral-700 bg-neutral-800">
                       <SelectValue />
@@ -196,12 +191,12 @@ export default function AdminBlogPage() {
                   <Label>Estado</Label>
                   <Select
                     value={form.status}
-                    onValueChange={(v) =>
-                      setForm((f) => ({
+                    onValueChange={(v: string | null) => {
+                      if (v) setForm((f) => ({
                         ...f,
                         status: v as "DRAFT" | "PUBLISHED",
-                      }))
-                    }
+                      }));
+                    }}
                   >
                     <SelectTrigger className="border-neutral-700 bg-neutral-800">
                       <SelectValue />
@@ -295,14 +290,8 @@ export default function AdminBlogPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon" asChild>
-                    <a
-                      href={`/blog/${post.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                  <Button variant="ghost" size="icon" render={<a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer" />}>
                       <Eye className="h-4 w-4 text-neutral-400" />
-                    </a>
                   </Button>
                   <Button
                     variant="ghost"
