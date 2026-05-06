@@ -1,11 +1,8 @@
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import type { Role } from "@prisma/client";
-import { authConfig } from "./auth.config";
 
 declare module "next-auth" {
   interface Session {
@@ -22,17 +19,11 @@ declare module "next-auth" {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const adapter = PrismaAdapter(prisma) as any;
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  ...authConfig,
-  adapter,
+  pages: { signIn: "/login" },
   session: { strategy: "jwt" },
   callbacks: {
-    ...authConfig.callbacks,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    jwt({ token, user, account }) {
+    jwt({ token, user }) {
       if (user) {
         token.role = (user as unknown as { role?: string }).role;
         token.id = user.id;
@@ -47,16 +38,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async signIn({ account }) {
+    authorized({ auth, request: { nextUrl } }) {
+      if (nextUrl.pathname.startsWith("/admin")) {
+        if (!auth?.user) return false;
+        const role = (auth.user as unknown as { role?: string }).role;
+        if (role !== "ADMIN" && role !== "STAFF") {
+          return Response.redirect(new URL("/", nextUrl));
+        }
+      }
       return true;
     },
   },
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     Credentials({
       name: "credentials",
       credentials: {
