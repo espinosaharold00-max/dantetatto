@@ -43,6 +43,16 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        brand: {
+          amber: "#F0A030",
+          "amber-light": "#F5B84D",
+          "amber-dark": "#D48A20",
+          dark: "#2A2A2A",
+          cream: "#EDE8D0",
+          pink: "#E8578A",
+          "pink-light": "#F8D5E0",
+          "pink-dark": "#C73D6E",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

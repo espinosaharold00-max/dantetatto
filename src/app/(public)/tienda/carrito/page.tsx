@@ -34,7 +34,7 @@ export default function CartPage() {
         alert(data.error || "Error al procesar el pago");
       }
     } catch {
-      alert("Error de conexión");
+      alert("Error de conexion");
     } finally {
       setLoading(false);
     }
@@ -43,15 +43,15 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-20 text-center">
-        <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-neutral-600" />
+        <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-brand-pink/30" />
         <h1 className="mb-2 text-2xl font-bold text-white">
-          Tu carrito está vacío
+          Tu carrito esta vacio
         </h1>
         <p className="mb-6 text-neutral-400">
-          Explora nuestros productos de cuidado para tu tatuaje
+          Explora nuestros productos Poly Love para el cuidado de tu tatuaje
         </p>
         <Link href="/tienda">
-          <Button className="bg-white text-black hover:bg-neutral-200">
+          <Button className="bg-brand-pink text-white hover:bg-brand-pink-dark">
             Ver productos
           </Button>
         </Link>
@@ -97,7 +97,7 @@ export default function CartPage() {
                     onClick={() =>
                       updateQuantity(item.product.id, item.quantity - 1)
                     }
-                    className="p-1.5 text-neutral-400 hover:text-white"
+                    className="p-1.5 text-neutral-400 hover:text-brand-pink"
                   >
                     <Minus className="h-3 w-3" />
                   </button>
@@ -108,12 +108,12 @@ export default function CartPage() {
                     onClick={() =>
                       updateQuantity(item.product.id, item.quantity + 1)
                     }
-                    className="p-1.5 text-neutral-400 hover:text-white"
+                    className="p-1.5 text-neutral-400 hover:text-brand-pink"
                   >
                     <Plus className="h-3 w-3" />
                   </button>
                 </div>
-                <p className="w-20 text-right font-semibold text-white">
+                <p className="w-20 text-right font-semibold text-brand-pink">
                   ${((item.product.price * item.quantity) / 100).toFixed(2)}
                 </p>
                 <button
@@ -135,7 +135,7 @@ export default function CartPage() {
           </Button>
         </div>
 
-        <Card className="h-fit border-neutral-800 bg-neutral-900">
+        <Card className="h-fit border-brand-pink/20 bg-neutral-900">
           <CardHeader>
             <CardTitle className="text-white">Resumen</CardTitle>
           </CardHeader>
@@ -147,13 +147,13 @@ export default function CartPage() {
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-neutral-400">Envío</span>
+              <span className="text-neutral-400">Envio</span>
               <span className="text-neutral-400">Por calcular</span>
             </div>
             <div className="border-t border-neutral-800 pt-4">
               <div className="flex justify-between">
                 <span className="font-semibold text-white">Total</span>
-                <span className="text-xl font-bold text-white">
+                <span className="text-xl font-bold text-brand-pink">
                   ${(total() / 100).toFixed(2)}
                 </span>
               </div>
@@ -161,7 +161,7 @@ export default function CartPage() {
             <Button
               onClick={handleCheckout}
               disabled={loading}
-              className="w-full bg-white text-black hover:bg-neutral-200"
+              className="w-full bg-brand-pink text-white hover:bg-brand-pink-dark"
               size="lg"
             >
               {loading ? "Procesando..." : "Pagar con Stripe"}

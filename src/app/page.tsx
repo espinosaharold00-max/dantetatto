@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Star, ArrowRight, Calendar, ShoppingBag } from "lucide-react";
+import { Star, ArrowRight, Calendar, ShoppingBag, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 
@@ -34,7 +34,7 @@ export default async function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TattooParlor",
-    name: process.env.NEXT_PUBLIC_BUSINESS_NAME || "Dante Tatto",
+    name: "Cat & Co Tattoo Stuff",
     description:
       "Estudio de tatuaje profesional. Haciendo amigos, no clientes.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com",
@@ -45,12 +45,7 @@ export default async function HomePage() {
       addressLocality: process.env.NEXT_PUBLIC_BUSINESS_CITY,
       addressRegion: process.env.NEXT_PUBLIC_BUSINESS_STATE,
       postalCode: process.env.NEXT_PUBLIC_BUSINESS_ZIP,
-      addressCountry: process.env.NEXT_PUBLIC_BUSINESS_COUNTRY || "MX",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: process.env.NEXT_PUBLIC_BUSINESS_LAT,
-      longitude: process.env.NEXT_PUBLIC_BUSINESS_LNG,
+      addressCountry: process.env.NEXT_PUBLIC_BUSINESS_COUNTRY || "PA",
     },
     image: `${process.env.NEXT_PUBLIC_SITE_URL}/images/og-image.jpg`,
     priceRange: "$$",
@@ -75,25 +70,31 @@ export default async function HomePage() {
       />
 
       {/* Hero */}
-      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-neutral-950">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neutral-900 via-neutral-950 to-black" />
+      <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-brand-amber">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <h1 className="mb-4 text-5xl font-bold tracking-tight text-white sm:text-7xl">
-            Haciendo amigos,
-            <br />
-            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-              no clientes
-            </span>
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/60">
+            Since 2025
+          </p>
+          <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
+            CAT & CO
           </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-neutral-400 sm:text-xl">
-            Cada tatuaje cuenta una historia. Trabajamos contigo para crear
-            piezas únicas que llevarás con orgullo toda la vida.
+          <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/70 sm:text-xl">
+            Tattoo Stuff
+          </p>
+          <p className="mb-1 text-base text-brand-dark/50">
+            タトゥースタジオ
+          </p>
+          <p className="mx-auto mb-10 mt-6 max-w-xl text-lg text-brand-dark/80">
+            Haciendo amigos, no clientes. Cada tatuaje cuenta una historia.
+            Trabajamos contigo para crear piezas unicas que llevaras con orgullo.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link href="/agenda">
               <Button
                 size="lg"
-                className="gap-2 bg-white text-black hover:bg-neutral-200"
+                className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
               >
                 <Calendar className="h-5 w-5" />
                 Agendar cita
@@ -103,7 +104,7 @@ export default async function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="gap-2 border-neutral-700 text-neutral-300 hover:bg-neutral-900"
+                className="gap-2 border-brand-dark/30 text-brand-dark hover:bg-brand-dark/10"
               >
                 <ShoppingBag className="h-5 w-5" />
                 Tienda
@@ -114,14 +115,21 @@ export default async function HomePage() {
       </section>
 
       {/* Portfolio */}
-      <section className="bg-neutral-950 py-20">
+      <section className="bg-brand-dark py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Portfolio
+            <div className="mb-2 flex items-center justify-center gap-2">
+              <Zap className="h-5 w-5 text-brand-amber" />
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
+                Portfolio
+              </span>
+              <Zap className="h-5 w-5 text-brand-amber" />
+            </div>
+            <h2 className="text-3xl font-black text-brand-cream sm:text-4xl">
+              Nuestro trabajo
             </h2>
-            <p className="mt-2 text-neutral-400">
-              Algunos de nuestros trabajos recientes
+            <p className="mt-2 text-neutral-500">
+              タトゥースタジオ — Algunos de nuestros trabajos recientes
             </p>
           </div>
 
@@ -143,7 +151,7 @@ export default async function HomePage() {
               : Array.from({ length: 8 }).map((_, i) => (
                   <div
                     key={i}
-                    className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg bg-neutral-900"
+                    className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg border border-neutral-800 bg-neutral-900"
                   >
                     <span className="text-sm text-neutral-600">
                       Portfolio {i + 1}
@@ -154,21 +162,24 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sobre mí */}
+      {/* Sobre mi */}
       <section className="border-t border-neutral-800 bg-neutral-900 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 md:grid-cols-2">
-            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-neutral-800">
+            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-brand-amber/20 bg-brand-dark">
               <span className="text-neutral-600">Foto del artista</span>
             </div>
             <div>
-              <h2 className="mb-4 text-3xl font-bold text-white">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
+                Cat Company — Since 2025
+              </span>
+              <h2 className="mb-4 mt-2 text-3xl font-black text-brand-cream">
                 Sobre el artista
               </h2>
               <p className="mb-4 text-neutral-400">
-                Con años de experiencia en el arte del tatuaje, cada pieza que
-                creo es una colaboración entre el artista y la persona. Mi
-                filosofía es simple: aquí no tienes citas, tienes encuentros con
+                Con anos de experiencia en el arte del tatuaje, cada pieza que
+                creo es una colaboracion entre el artista y la persona. Mi
+                filosofia es simple: aqui no tienes citas, tienes encuentros con
                 un amigo.
               </p>
               <p className="mb-6 text-neutral-400">
@@ -179,9 +190,9 @@ export default async function HomePage() {
               <Link href="/sobre-mi">
                 <Button
                   variant="outline"
-                  className="gap-2 border-neutral-700 text-neutral-300"
+                  className="gap-2 border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
                 >
-                  Conocer más
+                  Conocer mas
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -191,14 +202,17 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonios */}
-      <section className="bg-neutral-950 py-20">
+      <section className="bg-brand-dark py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
+              Testimonios
+            </span>
+            <h2 className="mt-2 text-3xl font-black text-brand-cream sm:text-4xl">
               Lo que dicen nuestros amigos
             </h2>
-            <p className="mt-2 text-neutral-400">
-              Reseñas reales de personas reales
+            <p className="mt-2 text-neutral-500">
+              Resenas reales de personas reales
             </p>
           </div>
 
@@ -215,8 +229,8 @@ export default async function HomePage() {
                           key={i}
                           className={`h-4 w-4 ${
                             i < review.rating
-                              ? "fill-amber-400 text-amber-400"
-                              : "text-neutral-600"
+                              ? "fill-brand-amber text-brand-amber"
+                              : "text-neutral-700"
                           }`}
                         />
                       ))}
@@ -224,7 +238,7 @@ export default async function HomePage() {
                     <p className="mb-4 text-sm text-neutral-300">
                       &quot;{review.comment}&quot;
                     </p>
-                    <p className="text-sm font-medium text-neutral-400">
+                    <p className="text-sm font-medium text-brand-amber/70">
                       — {review.user.name || "Cliente"}
                     </p>
                   </div>
@@ -238,7 +252,7 @@ export default async function HomePage() {
                       {Array.from({ length: 5 }).map((_, j) => (
                         <Star
                           key={j}
-                          className="h-4 w-4 fill-amber-400 text-amber-400"
+                          className="h-4 w-4 fill-brand-amber text-brand-amber"
                         />
                       ))}
                     </div>
@@ -246,7 +260,7 @@ export default async function HomePage() {
                       &quot;Excelente experiencia. El mejor artista de la zona.
                       100% recomendado.&quot;
                     </p>
-                    <p className="text-sm font-medium text-neutral-400">
+                    <p className="text-sm font-medium text-brand-amber/70">
                       — Cliente {i + 1}
                     </p>
                   </div>
@@ -256,19 +270,20 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Final */}
-      <section className="border-t border-neutral-800 bg-neutral-900 py-20">
+      <section className="bg-brand-amber py-20">
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-            ¿Listo para tu próximo tatuaje?
+          <p className="mb-2 text-sm text-brand-dark/50">タトゥースタジオ</p>
+          <h2 className="mb-4 text-3xl font-black text-brand-dark sm:text-4xl">
+            Listo para tu proximo tatuaje?
           </h2>
-          <p className="mb-8 text-neutral-400">
+          <p className="mb-8 text-brand-dark/70">
             Agenda tu consulta gratuita y platiquemos sobre tu idea. Sin
             compromiso, solo buena vibra.
           </p>
           <Link href="/agenda">
             <Button
               size="lg"
-              className="gap-2 bg-white text-black hover:bg-neutral-200"
+              className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
             >
               <Calendar className="h-5 w-5" />
               Agendar mi cita

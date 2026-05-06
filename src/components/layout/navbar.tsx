@@ -17,7 +17,7 @@ const navLinks = [
   { href: "/agenda", label: "Agendar cita" },
   { href: "/tienda", label: "Tienda" },
   { href: "/blog", label: "Blog" },
-  { href: "/sobre-mi", label: "Sobre mí" },
+  { href: "/sobre-mi", label: "Sobre mi" },
 ];
 
 export function Navbar() {
@@ -28,11 +28,14 @@ export function Navbar() {
     session?.user?.role === "ADMIN" || session?.user?.role === "STAFF";
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-neutral-800 bg-neutral-950/95 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-neutral-800 bg-brand-dark/95 backdrop-blur supports-[backdrop-filter]:bg-brand-dark/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold tracking-tight text-white">
-            DANTE TATTO
+          <span className="text-xl font-bold tracking-tight text-brand-amber">
+            CAT & CO
+          </span>
+          <span className="hidden text-[10px] uppercase tracking-widest text-neutral-500 sm:block">
+            Tattoo Stuff
           </span>
         </Link>
 
@@ -41,7 +44,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-neutral-300 transition-colors hover:text-white"
+              className="text-sm font-medium text-neutral-300 transition-colors hover:text-brand-amber"
             >
               {link.label}
             </Link>
@@ -50,7 +53,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link href="/tienda/carrito">
-            <Button variant="ghost" size="icon" className="text-neutral-300">
+            <Button variant="ghost" size="icon" className="text-neutral-300 hover:text-brand-pink">
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </Link>
@@ -71,7 +74,7 @@ export function Navbar() {
                 )}
                 <DropdownMenuItem onClick={() => signOut()}>
                   <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar sesión
+                  Cerrar sesion
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -80,9 +83,9 @@ export function Navbar() {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-neutral-700 text-neutral-300"
+                className="border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
               >
-                Iniciar sesión
+                Iniciar sesion
               </Button>
             </Link>
           )}
@@ -97,12 +100,12 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-neutral-800 bg-neutral-950 px-4 pb-4 md:hidden">
+        <div className="border-t border-neutral-800 bg-brand-dark px-4 pb-4 md:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block py-3 text-sm font-medium text-neutral-300 transition-colors hover:text-white"
+              className="block py-3 text-sm font-medium text-neutral-300 transition-colors hover:text-brand-amber"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
@@ -129,8 +132,8 @@ export function Navbar() {
               </>
             ) : (
               <Link href="/login" className="flex-1">
-                <Button variant="outline" className="w-full" size="sm">
-                  Iniciar sesión
+                <Button variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+                  Iniciar sesion
                 </Button>
               </Link>
             )}
