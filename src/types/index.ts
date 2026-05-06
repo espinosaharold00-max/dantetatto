@@ -5,8 +5,6 @@ import type {
   Order,
   OrderItem,
   Review,
-  Post,
-  EmailLog,
 } from "@prisma/client";
 
 export type AppointmentWithUser = Appointment & {
