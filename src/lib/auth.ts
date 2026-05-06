@@ -22,11 +22,36 @@ declare module "next-auth" {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const adapter = PrismaAdapter(prisma) as any;
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  adapter: PrismaAdapter(prisma) as any,
+  adapter,
   session: { strategy: "jwt" },
+  callbacks: {
+    ...authConfig.callbacks,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    jwt({ token, user, account }) {
+      if (user) {
+        token.role = (user as unknown as { role?: string }).role;
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        (session.user as unknown as { role?: string }).role =
+          token.role as string;
+      }
+      return session;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async signIn({ account }) {
+      return true;
+    },
+  },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
