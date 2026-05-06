@@ -14,7 +14,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN mkdir -p public
 RUN npx prisma generate
-RUN npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > scripts/init.sql
+RUN npx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script > scripts/init.sql
 RUN npm run build
 
 FROM base AS runner
