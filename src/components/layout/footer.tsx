@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Facebook, MapPin, Phone, Mail } from "lucide-react";
+import { ExternalLink, MapPin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -16,17 +16,17 @@ export function Footer() {
                 href="https://instagram.com/dantetatto"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-sm text-neutral-400 transition-colors hover:text-white"
               >
-                <Instagram className="h-5 w-5" />
+                Instagram
               </a>
               <a
                 href="https://facebook.com/dantetatto"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-sm text-neutral-400 transition-colors hover:text-white"
               >
-                <Facebook className="h-5 w-5" />
+                Facebook
               </a>
             </div>
           </div>
