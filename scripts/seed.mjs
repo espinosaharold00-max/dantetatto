@@ -10,15 +10,15 @@ async function main() {
 
   const { rows: admin } = await client.query(
     "SELECT id FROM users WHERE email = $1",
-    ["admin@dantetatto.com"]
+    ["admin@dantetattoo.com"]
   );
   if (admin.length === 0) {
     const hash = await bcrypt.hash("admin123456", 12);
     await client.query(
       'INSERT INTO users (id, name, email, password, role, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, NOW(), NOW())',
-      [randomUUID(), "Dante Admin", "admin@dantetatto.com", hash, "ADMIN"]
+      [randomUUID(), "Dante Admin", "admin@dantetattoo.com", hash, "ADMIN"]
     );
-    console.log("[seed] Admin creado: admin@dantetatto.com / admin123456");
+    console.log("[seed] Admin creado: admin@dantetattoo.com / admin123456");
   } else {
     console.log("[seed] Admin ya existe");
   }
