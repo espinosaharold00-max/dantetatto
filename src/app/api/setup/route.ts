@@ -5,10 +5,23 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const info: Record<string, unknown> = {
+    DATABASE_URL: process.env.DATABASE_URL
+      ? process.env.DATABASE_URL.replace(/\/\/.*@/, "//***@")
+      : "NOT SET",
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ? "SET" : "NOT SET",
+    AUTH_SECRET: process.env.AUTH_SECRET ? "SET" : "NOT SET",
+  };
+
   try {
+    const userCount = await prisma.user.count();
+    info.db_connected = true;
+    info.user_count = userCount;
+
     const existing = await prisma.user.findUnique({
       where: { email: "admin@dantetattoo.com" },
     });
+    info.admin_exists = !!existing;
 
     const hash = await bcrypt.hash("admin123456", 12);
 
@@ -17,34 +30,27 @@ export async function GET() {
         where: { email: "admin@dantetattoo.com" },
         data: { password: hash, role: "ADMIN" },
       });
-      return NextResponse.json({
-        status: "ok",
-        action: "password_reset",
-        email: "admin@dantetattoo.com",
-        message: "Admin existe — contraseña reseteada a admin123456",
+      info.action = "password_reset";
+    } else {
+      const user = await prisma.user.create({
+        data: {
+          name: "Dante Admin",
+          email: "admin@dantetattoo.com",
+          password: hash,
+          role: "ADMIN",
+        },
       });
+      info.action = "created";
+      info.user_id = user.id;
     }
 
-    const user = await prisma.user.create({
-      data: {
-        name: "Dante Admin",
-        email: "admin@dantetattoo.com",
-        password: hash,
-        role: "ADMIN",
-      },
-    });
-
-    return NextResponse.json({
-      status: "ok",
-      action: "created",
-      email: user.email,
-      id: user.id,
-      message: "Admin creado — admin@dantetattoo.com / admin123456",
-    });
+    info.status = "ok";
+    info.message = "Admin listo — admin@dantetattoo.com / admin123456";
+    return NextResponse.json(info);
   } catch (error) {
-    return NextResponse.json(
-      { status: "error", error: String(error) },
-      { status: 500 }
-    );
+    info.status = "error";
+    info.error = String(error);
+    info.stack = error instanceof Error ? error.stack?.split("\n").slice(0, 5) : undefined;
+    return NextResponse.json(info, { status: 500 });
   }
 }
