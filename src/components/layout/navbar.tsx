@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { Menu, X, ShoppingCart, User, LogOut } from "lucide-react";
+import { Menu, X, ShoppingCart, User, LogOut, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -67,6 +67,10 @@ export function Navbar() {
                 <DropdownMenuItem className="text-sm font-medium">
                   {session.user.name || session.user.email}
                 </DropdownMenuItem>
+                <DropdownMenuItem render={<Link href="/mis-citas" />}>
+                  <CalendarDays className="mr-2 h-4 w-4" />
+                  Mis Citas
+                </DropdownMenuItem>
                 {isAdmin && (
                   <DropdownMenuItem render={<Link href="/admin" />}>
                     Panel Admin
@@ -114,6 +118,11 @@ export function Navbar() {
           <div className="mt-4 flex gap-3 border-t border-neutral-800 pt-4">
             {session?.user ? (
               <>
+                <Link href="/mis-citas" className="flex-1" onClick={() => setMobileOpen(false)}>
+                  <Button variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+                    Mis Citas
+                  </Button>
+                </Link>
                 {isAdmin && (
                   <Link href="/admin" className="flex-1">
                     <Button variant="outline" className="w-full" size="sm">

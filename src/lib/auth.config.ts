@@ -28,6 +28,11 @@ export const authConfig = {
           return Response.redirect(new URL("/", nextUrl));
         }
       }
+      if (nextUrl.pathname.startsWith("/mis-citas")) {
+        if (!auth?.user) {
+          return Response.redirect(new URL("/login", nextUrl));
+        }
+      }
       return true;
     },
   },

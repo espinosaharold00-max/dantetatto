@@ -3,7 +3,10 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { appointmentSchema } from "@/lib/validations";
 import { createAppointment } from "@/services/appointments";
-import { sendAppointmentConfirmation } from "@/services/email";
+import {
+  sendAppointmentConfirmation,
+  sendAdminNewAppointmentNotification,
+} from "@/services/email";
 import bcrypt from "bcryptjs";
 
 export async function GET(req: NextRequest) {
@@ -93,6 +96,11 @@ export async function POST(req: NextRequest) {
     });
 
     await sendAppointmentConfirmation(appointment);
+
+    // Notify admin — fire-and-forget
+    sendAdminNewAppointmentNotification(appointment).catch((err) =>
+      console.error("Failed to send admin notification:", err)
+    );
 
     return NextResponse.json(appointment, { status: 201 });
   } catch (error) {

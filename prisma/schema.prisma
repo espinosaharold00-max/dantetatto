@@ -49,6 +49,11 @@ enum PostStatus {
   ARCHIVED
 }
 
+enum PaymentMethod {
+  CASH
+  TRANSFER
+}
+
 enum EmailType {
   APPOINTMENT_CONFIRMATION
   APPOINTMENT_REMINDER_48H
@@ -56,6 +61,7 @@ enum EmailType {
   APPOINTMENT_CONFIRMED
   APPOINTMENT_CANCELLED
   POST_APPOINTMENT
+  ADMIN_NEW_APPOINTMENT
   ORDER_CONFIRMATION
   ORDER_SHIPPED
   ORDER_INVOICE
@@ -140,16 +146,34 @@ model Appointment {
   bodyArea    String
   referenceImageUrl String?
   adminNotes  String?           @db.Text
+  totalPrice  Int?
+  deposit     Int?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   emailLogs EmailLog[]
+  payments  AppointmentPayment[]
 
   @@index([date])
   @@index([userId])
   @@index([status])
   @@map("appointments")
+}
+
+model AppointmentPayment {
+  id            String        @id @default(cuid())
+  appointmentId String
+  amount        Int
+  method        PaymentMethod
+  note          String?
+  confirmedBy   String?
+  createdAt     DateTime      @default(now())
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId])
+  @@map("appointment_payments")
 }
 
 model BlockedSlot {

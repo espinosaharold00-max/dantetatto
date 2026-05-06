@@ -4,6 +4,7 @@ import { EmailType } from "@prisma/client";
 import { AppointmentConfirmation } from "@/emails/appointment-confirmation";
 import { AppointmentReminder } from "@/emails/appointment-reminder";
 import { AppointmentStatusUpdate } from "@/emails/appointment-status";
+import { AdminNewAppointment } from "@/emails/admin-new-appointment";
 import { OrderConfirmation } from "@/emails/order-confirmation";
 import { PostAppointment } from "@/emails/post-appointment";
 import { format } from "date-fns";
@@ -56,6 +57,56 @@ export async function sendAppointmentConfirmation(appointment: {
     await logEmail({
       to: appointment.user.email,
       type: "APPOINTMENT_CONFIRMATION",
+      subject,
+      appointmentId: appointment.id,
+      error: (error as Error).message,
+    });
+  }
+}
+
+export async function sendAdminNewAppointmentNotification(appointment: {
+  id: string;
+  date: Date;
+  startTime: Date;
+  endTime: Date;
+  type: string;
+  bodyArea: string;
+  description: string;
+  user: { name: string | null; email: string; phone: string | null };
+}) {
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@dantetattoo.com";
+  const subject = "Nueva cita registrada — Dante Tatto";
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: adminEmail,
+      subject,
+      react: AdminNewAppointment({
+        clientName: appointment.user.name || "Cliente",
+        clientEmail: appointment.user.email,
+        clientPhone: appointment.user.phone || "",
+        date: format(appointment.date, "EEEE d 'de' MMMM, yyyy", {
+          locale: es,
+        }),
+        time: `${format(appointment.startTime, "HH:mm")} - ${format(appointment.endTime, "HH:mm")}`,
+        type: appointment.type,
+        bodyArea: appointment.bodyArea,
+        description: appointment.description,
+      }),
+    });
+
+    await logEmail({
+      to: adminEmail,
+      type: "ADMIN_NEW_APPOINTMENT",
+      subject,
+      resendId: result.data?.id,
+      appointmentId: appointment.id,
+    });
+  } catch (error) {
+    await logEmail({
+      to: adminEmail,
+      type: "ADMIN_NEW_APPOINTMENT",
       subject,
       appointmentId: appointment.id,
       error: (error as Error).message,

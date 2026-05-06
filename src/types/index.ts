@@ -1,5 +1,6 @@
 import type {
   Appointment,
+  AppointmentPayment,
   User,
   Product,
   Order,
@@ -9,6 +10,18 @@ import type {
 
 export type AppointmentWithUser = Appointment & {
   user: Pick<User, "id" | "name" | "email" | "phone" | "image">;
+};
+
+export type AppointmentWithPayments = Appointment & {
+  user: Pick<User, "id" | "name" | "email" | "phone" | "image">;
+  payments: AppointmentPayment[];
+};
+
+export type PaymentSummary = {
+  totalPrice: number;
+  totalPaid: number;
+  balance: number;
+  paymentCount: number;
 };
 
 export type OrderWithItems = Order & {

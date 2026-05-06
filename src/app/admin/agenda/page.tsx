@@ -20,7 +20,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { formatCOP } from "@/lib/format";
 import type { AppointmentWithUser } from "@/types";
+import type { AppointmentPayment } from "@prisma/client";
 
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
@@ -50,6 +61,18 @@ export default function AdminAgendaPage() {
     useState<AppointmentWithUser | null>(null);
   const [notes, setNotes] = useState("");
 
+  // Payment state
+  const [payments, setPayments] = useState<AppointmentPayment[]>([]);
+  const [loadingPayments, setLoadingPayments] = useState(false);
+  const [priceForm, setPriceForm] = useState({ totalPrice: "", deposit: "" });
+  const [savingPrice, setSavingPrice] = useState(false);
+  const [paymentForm, setPaymentForm] = useState({
+    amount: "",
+    method: "CASH",
+    note: "",
+  });
+  const [submittingPayment, setSubmittingPayment] = useState(false);
+
   const weekStart = startOfWeek(currentWeek, { weekStartsOn: 1 });
   const weekEnd = endOfWeek(currentWeek, { weekStartsOn: 1 });
 
@@ -63,6 +86,34 @@ export default function AdminAgendaPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [currentWeek]);
+
+  const fetchPayments = async (appointmentId: string) => {
+    setLoadingPayments(true);
+    try {
+      const res = await fetch(
+        `/api/appointments/${appointmentId}/payments`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setPayments(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingPayments(false);
+    }
+  };
+
+  const selectAppointment = (apt: AppointmentWithUser) => {
+    setSelectedAppointment(apt);
+    setNotes(apt.adminNotes || "");
+    setPriceForm({
+      totalPrice: apt.totalPrice?.toString() || "",
+      deposit: apt.deposit?.toString() || "",
+    });
+    setPaymentForm({ amount: "", method: "CASH", note: "" });
+    fetchPayments(apt.id);
+  };
 
   const updateStatus = async (id: string, status: string) => {
     try {
@@ -94,6 +145,67 @@ export default function AdminAgendaPage() {
       console.error(err);
     }
   };
+
+  const savePrice = async (id: string) => {
+    setSavingPrice(true);
+    try {
+      const totalPrice = parseInt(priceForm.totalPrice);
+      const deposit = parseInt(priceForm.deposit) || 0;
+
+      if (isNaN(totalPrice) || totalPrice <= 0) return;
+
+      const res = await fetch(`/api/appointments/${id}/price`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ totalPrice, deposit }),
+      });
+
+      if (res.ok) {
+        const updatedApt = {
+          ...selectedAppointment!,
+          totalPrice,
+          deposit,
+        };
+        setSelectedAppointment(updatedApt);
+        setAppointments((prev) =>
+          prev.map((a) => (a.id === id ? updatedApt : a))
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSavingPrice(false);
+    }
+  };
+
+  const submitPayment = async (id: string) => {
+    setSubmittingPayment(true);
+    try {
+      const amount = parseInt(paymentForm.amount);
+      if (isNaN(amount) || amount <= 0) return;
+
+      const res = await fetch(`/api/appointments/${id}/payments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount,
+          method: paymentForm.method,
+          note: paymentForm.note || undefined,
+        }),
+      });
+
+      if (res.ok) {
+        setPaymentForm({ amount: "", method: "CASH", note: "" });
+        fetchPayments(id);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmittingPayment(false);
+    }
+  };
+
+  const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
 
   return (
     <div>
@@ -140,10 +252,7 @@ export default function AdminAgendaPage() {
                 className={`cursor-pointer border-neutral-800 bg-neutral-900 transition-colors hover:border-neutral-700 ${
                   selectedAppointment?.id === apt.id ? "ring-1 ring-white" : ""
                 }`}
-                onClick={() => {
-                  setSelectedAppointment(apt);
-                  setNotes(apt.adminNotes || "");
-                }}
+                onClick={() => selectAppointment(apt)}
               >
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
@@ -288,6 +397,222 @@ export default function AdminAgendaPage() {
                 >
                   Guardar notas
                 </Button>
+              </div>
+
+              {/* Payment section */}
+              <div className="border-t border-neutral-800 pt-4">
+                <p className="mb-3 text-xs font-semibold uppercase text-amber-500">
+                  Pagos
+                </p>
+
+                {selectedAppointment.totalPrice == null ? (
+                  // Set price form
+                  <div className="space-y-3 rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                    <p className="text-sm font-medium text-white">
+                      Establecer precio
+                    </p>
+                    <div>
+                      <Label className="text-xs text-neutral-500">
+                        Precio total
+                      </Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        placeholder="0"
+                        value={priceForm.totalPrice}
+                        onChange={(e) =>
+                          setPriceForm((prev) => ({
+                            ...prev,
+                            totalPrice: e.target.value,
+                          }))
+                        }
+                        className="mt-1 border-neutral-700 bg-neutral-800"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs text-neutral-500">
+                        Abono inicial
+                      </Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        placeholder="0"
+                        value={priceForm.deposit}
+                        onChange={(e) =>
+                          setPriceForm((prev) => ({
+                            ...prev,
+                            deposit: e.target.value,
+                          }))
+                        }
+                        className="mt-1 border-neutral-700 bg-neutral-800"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => savePrice(selectedAppointment.id)}
+                      disabled={savingPrice || !priceForm.totalPrice}
+                      size="sm"
+                      className="w-full bg-amber-600 text-white hover:bg-amber-700"
+                    >
+                      {savingPrice ? "Guardando..." : "Guardar precio"}
+                    </Button>
+                  </div>
+                ) : (
+                  // Price summary + payment form
+                  <div className="space-y-3">
+                    {/* Summary */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 rounded-lg border border-neutral-800 bg-neutral-950 p-3 text-sm">
+                      <span className="text-neutral-400">
+                        Total:{" "}
+                        <span className="font-medium text-white">
+                          {formatCOP(selectedAppointment.totalPrice)}
+                        </span>
+                      </span>
+                      <span className="text-neutral-400">
+                        Abonado:{" "}
+                        <span className="font-medium text-green-400">
+                          {formatCOP(
+                            (selectedAppointment.deposit || 0) + totalPaid
+                          )}
+                        </span>
+                      </span>
+                      <span className="text-neutral-400">
+                        Saldo:{" "}
+                        <span className="font-medium text-amber-400">
+                          {formatCOP(
+                            selectedAppointment.totalPrice -
+                              (selectedAppointment.deposit || 0) -
+                              totalPaid
+                          )}
+                        </span>
+                      </span>
+                    </div>
+
+                    {/* Register payment form */}
+                    <div className="space-y-2 rounded-lg border border-neutral-800 bg-neutral-950 p-3">
+                      <p className="text-sm font-medium text-white">
+                        Registrar abono
+                      </p>
+                      <div>
+                        <Label className="text-xs text-neutral-500">
+                          Monto
+                        </Label>
+                        <Input
+                          type="number"
+                          min={0}
+                          placeholder="0"
+                          value={paymentForm.amount}
+                          onChange={(e) =>
+                            setPaymentForm((prev) => ({
+                              ...prev,
+                              amount: e.target.value,
+                            }))
+                          }
+                          className="mt-1 border-neutral-700 bg-neutral-800"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs text-neutral-500">
+                          Método
+                        </Label>
+                        <Select
+                          value={paymentForm.method}
+                          onValueChange={(v: string | null) => {
+                            if (v)
+                              setPaymentForm((prev) => ({
+                                ...prev,
+                                method: v,
+                              }));
+                          }}
+                        >
+                          <SelectTrigger className="mt-1 w-full border-neutral-700 bg-neutral-800 text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="CASH">Efectivo</SelectItem>
+                            <SelectItem value="TRANSFER">
+                              Transferencia
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-xs text-neutral-500">
+                          Nota (opcional)
+                        </Label>
+                        <Input
+                          type="text"
+                          placeholder="Nota del pago..."
+                          value={paymentForm.note}
+                          onChange={(e) =>
+                            setPaymentForm((prev) => ({
+                              ...prev,
+                              note: e.target.value,
+                            }))
+                          }
+                          className="mt-1 border-neutral-700 bg-neutral-800"
+                        />
+                      </div>
+                      <Button
+                        onClick={() => submitPayment(selectedAppointment.id)}
+                        disabled={submittingPayment || !paymentForm.amount}
+                        size="sm"
+                        className="w-full bg-amber-600 text-white hover:bg-amber-700"
+                      >
+                        {submittingPayment
+                          ? "Registrando..."
+                          : "Registrar abono"}
+                      </Button>
+                    </div>
+
+                    {/* Payment history */}
+                    {loadingPayments ? (
+                      <p className="text-xs text-neutral-500">
+                        Cargando pagos...
+                      </p>
+                    ) : payments.length > 0 ? (
+                      <div className="space-y-2">
+                        <p className="text-xs font-medium uppercase text-neutral-500">
+                          Historial de pagos
+                        </p>
+                        {payments.map((p) => (
+                          <div
+                            key={p.id}
+                            className="flex items-center justify-between rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2"
+                          >
+                            <div>
+                              <p className="text-sm font-medium text-white">
+                                {formatCOP(p.amount)}
+                              </p>
+                              <p className="text-xs text-neutral-500">
+                                {format(
+                                  new Date(p.createdAt),
+                                  "d MMM yyyy, HH:mm",
+                                  { locale: es }
+                                )}
+                              </p>
+                            </div>
+                            <Badge
+                              variant="outline"
+                              className={
+                                p.method === "CASH"
+                                  ? "border-green-500/20 bg-green-500/10 text-green-400"
+                                  : "border-blue-500/20 bg-blue-500/10 text-blue-400"
+                              }
+                            >
+                              {p.method === "CASH"
+                                ? "Efectivo"
+                                : "Transferencia"}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-neutral-500">
+                        Sin pagos registrados
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
