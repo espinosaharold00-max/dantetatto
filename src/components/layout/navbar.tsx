@@ -52,11 +52,9 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/tienda/carrito">
-            <Button variant="ghost" size="icon" className="text-neutral-300 hover:text-brand-pink">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
-          </Link>
+          <Button render={<Link href="/tienda/carrito" />} variant="ghost" size="icon" className="text-neutral-300 hover:text-brand-pink">
+            <ShoppingCart className="h-5 w-5" />
+          </Button>
 
           {session?.user ? (
             <DropdownMenu>
@@ -83,15 +81,14 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/login">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
-              >
-                Iniciar sesion
-              </Button>
-            </Link>
+            <Button
+              render={<Link href="/login" />}
+              variant="outline"
+              size="sm"
+              className="border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
+            >
+              Iniciar sesion
+            </Button>
           )}
         </div>
 
@@ -118,17 +115,13 @@ export function Navbar() {
           <div className="mt-4 flex gap-3 border-t border-neutral-800 pt-4">
             {session?.user ? (
               <>
-                <Link href="/mis-citas" className="flex-1" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
-                    Mis Citas
-                  </Button>
-                </Link>
+                <Button render={<Link href="/mis-citas" className="flex-1" onClick={() => setMobileOpen(false)} />} variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+                  Mis Citas
+                </Button>
                 {isAdmin && (
-                  <Link href="/admin" className="flex-1">
-                    <Button variant="outline" className="w-full" size="sm">
-                      Panel Admin
-                    </Button>
-                  </Link>
+                  <Button render={<Link href="/admin" className="flex-1" />} variant="outline" className="w-full" size="sm">
+                    Panel Admin
+                  </Button>
                 )}
                 <Button
                   variant="ghost"
@@ -140,11 +133,9 @@ export function Navbar() {
                 </Button>
               </>
             ) : (
-              <Link href="/login" className="flex-1">
-                <Button variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
-                  Iniciar sesion
-                </Button>
-              </Link>
+              <Button render={<Link href="/login" className="flex-1" />} variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+                Iniciar sesion
+              </Button>
             )}
           </div>
         </div>

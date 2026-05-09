@@ -50,11 +50,9 @@ export default function CartPage() {
         <p className="mb-6 text-neutral-400">
           Explora nuestros productos Poly Love para el cuidado de tu tatuaje
         </p>
-        <Link href="/tienda">
-          <Button className="bg-brand-pink text-white hover:bg-brand-pink-dark">
-            Ver productos
-          </Button>
-        </Link>
+        <Button render={<Link href="/tienda" />} className="bg-brand-pink text-white hover:bg-brand-pink-dark">
+          Ver productos
+        </Button>
       </div>
     );
   }

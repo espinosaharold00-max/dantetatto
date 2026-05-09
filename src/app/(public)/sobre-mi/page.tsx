@@ -78,21 +78,18 @@ export default function SobreMiPage() {
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Link href="/agenda">
-              <Button className="gap-2 bg-white text-black hover:bg-neutral-200">
-                <Calendar className="h-5 w-5" />
-                Agendar cita
-              </Button>
-            </Link>
-            <Link href="/tienda">
-              <Button
-                variant="outline"
-                className="gap-2 border-neutral-700 text-neutral-300"
-              >
-                Tienda
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
+            <Button render={<Link href="/agenda" />} className="gap-2 bg-white text-black hover:bg-neutral-200">
+              <Calendar className="h-5 w-5" />
+              Agendar cita
+            </Button>
+            <Button
+              render={<Link href="/tienda" />}
+              variant="outline"
+              className="gap-2 border-neutral-700 text-neutral-300"
+            >
+              Tienda
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </div>

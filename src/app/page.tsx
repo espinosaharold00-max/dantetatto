@@ -91,25 +91,23 @@ export default async function HomePage() {
             Trabajamos contigo para crear piezas unicas que llevaras con orgullo.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/agenda">
-              <Button
-                size="lg"
-                className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
-              >
-                <Calendar className="h-5 w-5" />
-                Agendar cita
-              </Button>
-            </Link>
-            <Link href="/tienda">
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2 border-brand-dark/30 text-brand-dark hover:bg-brand-dark/10"
-              >
-                <ShoppingBag className="h-5 w-5" />
-                Tienda
-              </Button>
-            </Link>
+            <Button
+              render={<Link href="/agenda" />}
+              size="lg"
+              className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
+            >
+              <Calendar className="h-5 w-5" />
+              Agendar cita
+            </Button>
+            <Button
+              render={<Link href="/tienda" />}
+              size="lg"
+              variant="outline"
+              className="gap-2 border-brand-dark/30 text-brand-dark hover:bg-brand-dark/10"
+            >
+              <ShoppingBag className="h-5 w-5" />
+              Tienda
+            </Button>
           </div>
         </div>
       </section>
@@ -187,15 +185,14 @@ export default async function HomePage() {
                 tradicional, me apasiona transformar tus ideas en arte
                 permanente que refleje tu personalidad y tu historia.
               </p>
-              <Link href="/sobre-mi">
-                <Button
-                  variant="outline"
-                  className="gap-2 border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
-                >
-                  Conocer mas
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
+              <Button
+                render={<Link href="/sobre-mi" />}
+                variant="outline"
+                className="gap-2 border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
+              >
+                Conocer mas
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
@@ -280,16 +277,15 @@ export default async function HomePage() {
             Agenda tu consulta gratuita y platiquemos sobre tu idea. Sin
             compromiso, solo buena vibra.
           </p>
-          <Link href="/agenda">
-            <Button
-              size="lg"
-              className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
-            >
-              <Calendar className="h-5 w-5" />
-              Agendar mi cita
-              <ArrowRight className="h-5 w-5" />
-            </Button>
-          </Link>
+          <Button
+            render={<Link href="/agenda" />}
+            size="lg"
+            className="gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90"
+          >
+            <Calendar className="h-5 w-5" />
+            Agendar mi cita
+            <ArrowRight className="h-5 w-5" />
+          </Button>
         </div>
       </section>
 

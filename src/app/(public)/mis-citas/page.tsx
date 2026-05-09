@@ -282,11 +282,9 @@ export default function MisCitasPage() {
             <p className="mb-6 text-sm text-neutral-400">
               Necesitas una cuenta para acceder a tu historial de citas y pagos.
             </p>
-            <Link href="/login">
-              <Button className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
-                Iniciar sesión
-              </Button>
-            </Link>
+            <Button render={<Link href="/login" />} className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
+              Iniciar sesión
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -341,11 +339,9 @@ export default function MisCitasPage() {
             <p className="mb-6 text-sm text-neutral-400">
               Agenda tu primera cita y empieza tu proyecto de tatuaje.
             </p>
-            <Link href="/agenda">
-              <Button className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
-                Agendar cita
-              </Button>
-            </Link>
+            <Button render={<Link href="/agenda" />} className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
+              Agendar cita
+            </Button>
           </CardContent>
         </Card>
       )}
