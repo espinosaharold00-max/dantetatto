@@ -102,6 +102,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
+          <p className="mt-4 text-center text-sm">
+            <Link href="/recuperar" className="text-neutral-400 hover:text-brand-amber">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </p>
+
           <Separator className="my-6 bg-neutral-800" />
 
           <Button

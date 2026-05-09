@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -57,20 +56,7 @@ export default function RegisterPage() {
         return;
       }
 
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError("Cuenta creada pero hubo un error al iniciar sesión. Intenta en /login");
-        setLoading(false);
-        return;
-      }
-
-      router.push("/");
-      router.refresh();
+      router.push(`/verificar?email=${encodeURIComponent(email)}&p=${encodeURIComponent(password)}`);
     } catch {
       setError("Error de conexión con el servidor");
       setLoading(false);

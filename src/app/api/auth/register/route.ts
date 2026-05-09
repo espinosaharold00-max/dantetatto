@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations";
+import { resend, FROM_EMAIL } from "@/lib/email";
+import { VerificationCodeEmail } from "@/emails/verification-code";
+
+function generateCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,6 +36,51 @@ export async function POST(req: NextRequest) {
         role: "CLIENT",
       },
     });
+
+    // Generate verification code
+    const code = generateCode();
+    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: data.email },
+    });
+
+    await prisma.verificationToken.create({
+      data: {
+        identifier: data.email,
+        token: code,
+        expires,
+      },
+    });
+
+    // Send verification email
+    try {
+      const { data: emailData } = await resend.emails.send({
+        from: FROM_EMAIL,
+        to: data.email,
+        subject: "Verifica tu cuenta — Dante Tatto",
+        react: VerificationCodeEmail({ name: data.name, code }),
+      });
+
+      await prisma.emailLog.create({
+        data: {
+          to: data.email,
+          type: "EMAIL_VERIFICATION",
+          subject: "Verifica tu cuenta — Dante Tatto",
+          resendId: emailData?.id,
+        },
+      });
+    } catch (emailError) {
+      console.error("[register] Email send error:", emailError);
+      await prisma.emailLog.create({
+        data: {
+          to: data.email,
+          type: "EMAIL_VERIFICATION",
+          subject: "Verifica tu cuenta — Dante Tatto",
+          error: String(emailError),
+        },
+      });
+    }
 
     return NextResponse.json(
       { user: { id: user.id, name: user.name, email: user.email } },

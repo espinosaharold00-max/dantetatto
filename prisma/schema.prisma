@@ -66,6 +66,8 @@ enum EmailType {
   ORDER_SHIPPED
   ORDER_INVOICE
   NEWSLETTER
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
 }
 
 // ─── USER ────────────────────────────────────────────────
