@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { Menu, X, ShoppingCart, User, LogOut, CalendarDays } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Menu, X, ShoppingCart, User, LogOut, CalendarDays, Shield } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
@@ -23,10 +17,24 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const isAdmin =
     session?.user?.role === "ADMIN" || session?.user?.role === "STAFF";
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    if (userMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [userMenuOpen]);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-neutral-800 bg-brand-dark/95 backdrop-blur supports-[backdrop-filter]:bg-brand-dark/60">
@@ -61,35 +69,58 @@ export function Navbar() {
           </Link>
 
           {session?.user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="text-neutral-300" />}>
-                  <User className="h-5 w-5" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem className="text-sm font-medium">
-                  {session.user.name || session.user.email}
-                </DropdownMenuItem>
-                <DropdownMenuItem render={<Link href="/mis-citas" />}>
-                  <CalendarDays className="mr-2 h-4 w-4" />
-                  Mis Citas
-                </DropdownMenuItem>
-                {isAdmin && (
-                  <DropdownMenuItem render={<Link href="/admin" />}>
-                    Panel Admin
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={() => signOut()}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Cerrar sesion
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div ref={userMenuRef} className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+              >
+                <User className="h-5 w-5" />
+              </button>
+
+              {userMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-52 rounded-lg border border-neutral-700 bg-neutral-900 p-1 shadow-xl">
+                  <div className="px-3 py-2 text-sm font-medium text-neutral-300">
+                    {session.user.name || session.user.email}
+                  </div>
+                  <div className="my-1 h-px bg-neutral-700" />
+                  <Link
+                    href="/mis-citas"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+                  >
+                    <CalendarDays className="h-4 w-4" />
+                    Mis Citas
+                  </Link>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+                    >
+                      <Shield className="h-4 w-4" />
+                      Panel Admin
+                    </Link>
+                  )}
+                  <div className="my-1 h-px bg-neutral-700" />
+                  <button
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      signOut({ callbackUrl: "/login" });
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <Link
               href="/login"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10")}
             >
-              Iniciar sesion
+              Iniciar sesión
             </Link>
           )}
         </div>
@@ -114,12 +145,15 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <div className="mt-4 flex gap-3 border-t border-neutral-800 pt-4">
+          <div className="mt-4 space-y-2 border-t border-neutral-800 pt-4">
             {session?.user ? (
               <>
+                <p className="px-1 text-xs text-neutral-500">
+                  {session.user.name || session.user.email}
+                </p>
                 <Link
                   href="/mis-citas"
-                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full border-brand-amber/30 text-brand-amber")}
+                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full border-brand-amber/30 text-brand-amber")}
                   onClick={() => setMobileOpen(false)}
                 >
                   Mis Citas
@@ -127,28 +161,30 @@ export function Navbar() {
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full")}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}
                     onClick={() => setMobileOpen(false)}
                   >
                     Panel Admin
                   </Link>
                 )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => signOut()}
-                  className="text-neutral-400"
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    signOut({ callbackUrl: "/login" });
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-500/30 px-3 py-1.5 text-sm text-red-400 transition-colors hover:bg-red-500/10"
                 >
-                  Salir
-                </Button>
+                  <LogOut className="h-4 w-4" />
+                  Cerrar sesión
+                </button>
               </>
             ) : (
               <Link
                 href="/login"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full border-brand-amber/30 text-brand-amber")}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full border-brand-amber/30 text-brand-amber")}
                 onClick={() => setMobileOpen(false)}
               >
-                Iniciar sesion
+                Iniciar sesión
               </Link>
             )}
           </div>
