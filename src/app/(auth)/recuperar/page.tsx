@@ -11,6 +11,7 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [emailFailed, setEmailFailed] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +41,9 @@ export default function ForgotPasswordPage() {
         return;
       }
 
+      const data = await res.json();
       setSent(true);
+      if (!data.emailSent) setEmailFailed(true);
     } catch {
       setError("Error de conexión con el servidor");
       setLoading(false);
@@ -62,9 +65,15 @@ export default function ForgotPasswordPage() {
         <CardContent>
           {sent ? (
             <div className="space-y-4 text-center">
-              <div className="rounded-lg border border-green-800 bg-green-950 p-4 text-sm text-green-400">
-                Si el email está registrado, recibirás un enlace para restablecer tu contraseña.
-              </div>
+              {emailFailed ? (
+                <div className="rounded-lg border border-yellow-800 bg-yellow-950 p-4 text-sm text-yellow-400">
+                  El servicio de email no está disponible en este momento. Contacta al administrador para restablecer tu contraseña.
+                </div>
+              ) : (
+                <div className="rounded-lg border border-green-800 bg-green-950 p-4 text-sm text-green-400">
+                  Si el email está registrado, recibirás un enlace para restablecer tu contraseña.
+                </div>
+              )}
               <Link
                 href="/login"
                 className="block text-sm text-brand-amber underline"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,7 +57,19 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push(`/verificar?email=${encodeURIComponent(email)}&p=${encodeURIComponent(password)}`);
+      const result = await res.json();
+
+      if (result.verified) {
+        await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+        router.push("/");
+        router.refresh();
+      } else {
+        router.push(`/verificar?email=${encodeURIComponent(email)}&p=${encodeURIComponent(password)}`);
+      }
     } catch {
       setError("Error de conexión con el servidor");
       setLoading(false);

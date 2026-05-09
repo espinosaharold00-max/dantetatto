@@ -38,22 +38,36 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    let emailSent = false;
     try {
-      const { data } = await resend.emails.send({
+      const { data: emailData, error: emailErr } = await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: "Restablecer contraseña — Dante Tatto",
         react: PasswordResetEmail({ name: user.name || "Usuario", token }),
       });
 
-      await prisma.emailLog.create({
-        data: {
-          to: email,
-          type: "PASSWORD_RESET",
-          subject: "Restablecer contraseña — Dante Tatto",
-          resendId: data?.id,
-        },
-      });
+      if (emailErr) {
+        console.error("[forgot-password] Resend API error:", emailErr);
+        await prisma.emailLog.create({
+          data: {
+            to: email,
+            type: "PASSWORD_RESET",
+            subject: "Restablecer contraseña — Dante Tatto",
+            error: JSON.stringify(emailErr),
+          },
+        });
+      } else {
+        emailSent = true;
+        await prisma.emailLog.create({
+          data: {
+            to: email,
+            type: "PASSWORD_RESET",
+            subject: "Restablecer contraseña — Dante Tatto",
+            resendId: emailData?.id,
+          },
+        });
+      }
     } catch (emailError) {
       console.error("[forgot-password] Email send error:", emailError);
       await prisma.emailLog.create({
@@ -66,7 +80,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, emailSent });
   } catch {
     return NextResponse.json(
       { error: "Error interno del servidor" },

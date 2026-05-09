@@ -54,22 +54,36 @@ export async function POST(req: NextRequest) {
     });
 
     // Send verification email
+    let emailSent = false;
     try {
-      const { data: emailData } = await resend.emails.send({
+      const { data: emailData, error: emailErr } = await resend.emails.send({
         from: FROM_EMAIL,
         to: data.email,
         subject: "Verifica tu cuenta — Dante Tatto",
         react: VerificationCodeEmail({ name: data.name, code }),
       });
 
-      await prisma.emailLog.create({
-        data: {
-          to: data.email,
-          type: "EMAIL_VERIFICATION",
-          subject: "Verifica tu cuenta — Dante Tatto",
-          resendId: emailData?.id,
-        },
-      });
+      if (emailErr) {
+        console.error("[register] Resend API error:", emailErr);
+        await prisma.emailLog.create({
+          data: {
+            to: data.email,
+            type: "EMAIL_VERIFICATION",
+            subject: "Verifica tu cuenta — Dante Tatto",
+            error: JSON.stringify(emailErr),
+          },
+        });
+      } else {
+        emailSent = true;
+        await prisma.emailLog.create({
+          data: {
+            to: data.email,
+            type: "EMAIL_VERIFICATION",
+            subject: "Verifica tu cuenta — Dante Tatto",
+            resendId: emailData?.id,
+          },
+        });
+      }
     } catch (emailError) {
       console.error("[register] Email send error:", emailError);
       await prisma.emailLog.create({
@@ -82,8 +96,21 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    if (!emailSent) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+      await prisma.verificationToken.deleteMany({
+        where: { identifier: data.email },
+      });
+    }
+
     return NextResponse.json(
-      { user: { id: user.id, name: user.name, email: user.email } },
+      {
+        user: { id: user.id, name: user.name, email: user.email },
+        verified: !emailSent,
+      },
       { status: 201 }
     );
   } catch (error) {
