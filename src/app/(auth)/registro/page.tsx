@@ -4,32 +4,50 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { registerSchema, type RegisterInput } from "@/lib/validations";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const onSubmit = async (data: RegisterInput) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
+
+    const formData = new FormData(e.currentTarget);
+    const name = (formData.get("name") as string).trim();
+    const email = (formData.get("email") as string).trim();
+    const phone = (formData.get("phone") as string).trim();
+    const password = formData.get("password") as string;
+
+    if (!name || name.length < 2) {
+      setError("El nombre debe tener al menos 2 caracteres");
+      setLoading(false);
+      return;
+    }
+
+    if (!email) {
+      setError("El email es requerido");
+      setLoading(false);
+      return;
+    }
+
+    if (!password || password.length < 8) {
+      setError("La contraseña debe tener al menos 8 caracteres");
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ name, email, password, phone: phone || undefined }),
       });
 
       if (!res.ok) {
@@ -39,16 +57,22 @@ export default function RegisterPage() {
         return;
       }
 
-      await signIn("credentials", {
-        email: data.email,
-        password: data.password,
+      const result = await signIn("credentials", {
+        email,
+        password,
         redirect: false,
       });
+
+      if (result?.error) {
+        setError("Cuenta creada pero hubo un error al iniciar sesión. Intenta en /login");
+        setLoading(false);
+        return;
+      }
 
       router.push("/");
       router.refresh();
     } catch {
-      setError("Error de conexión");
+      setError("Error de conexión con el servidor");
       setLoading(false);
     }
   };
@@ -66,7 +90,7 @@ export default function RegisterPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="rounded-lg border border-red-800 bg-red-950 p-3 text-sm text-red-400">
                 {error}
@@ -77,36 +101,26 @@ export default function RegisterPage() {
               <Label htmlFor="name">Nombre completo</Label>
               <Input
                 id="name"
-                {...form.register("name")}
+                name="name"
                 className="border-neutral-700 bg-neutral-800"
               />
-              {form.formState.errors.name && (
-                <p className="mt-1 text-sm text-red-400">
-                  {form.formState.errors.name.message}
-                </p>
-              )}
             </div>
 
             <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
-                {...form.register("email")}
                 className="border-neutral-700 bg-neutral-800"
               />
-              {form.formState.errors.email && (
-                <p className="mt-1 text-sm text-red-400">
-                  {form.formState.errors.email.message}
-                </p>
-              )}
             </div>
 
             <div>
               <Label htmlFor="phone">Teléfono (opcional)</Label>
               <Input
                 id="phone"
-                {...form.register("phone")}
+                name="phone"
                 className="border-neutral-700 bg-neutral-800"
               />
             </div>
@@ -115,15 +129,10 @@ export default function RegisterPage() {
               <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
+                name="password"
                 type="password"
-                {...form.register("password")}
                 className="border-neutral-700 bg-neutral-800"
               />
-              {form.formState.errors.password && (
-                <p className="mt-1 text-sm text-red-400">
-                  {form.formState.errors.password.message}
-                </p>
-              )}
             </div>
 
             <Button
