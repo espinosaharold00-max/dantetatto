@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -78,18 +79,17 @@ export default function SobreMiPage() {
           </div>
 
           <div className="mt-8 flex gap-4">
-            <Button render={<Link href="/agenda" />} className="gap-2 bg-white text-black hover:bg-neutral-200">
+            <Link href="/agenda" className={cn(buttonVariants(), "gap-2 bg-white text-black hover:bg-neutral-200")}>
               <Calendar className="h-5 w-5" />
               Agendar cita
-            </Button>
-            <Button
-              render={<Link href="/tienda" />}
-              variant="outline"
-              className="gap-2 border-neutral-700 text-neutral-300"
+            </Link>
+            <Link
+              href="/tienda"
+              className={cn(buttonVariants({ variant: "outline" }), "gap-2 border-neutral-700 text-neutral-300")}
             >
               Tienda
               <ArrowRight className="h-4 w-4" />
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { Menu, X, ShoppingCart, User, LogOut, CalendarDays } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,9 +53,12 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button render={<Link href="/tienda/carrito" />} variant="ghost" size="icon" className="text-neutral-300 hover:text-brand-pink">
+          <Link
+            href="/tienda/carrito"
+            className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "text-neutral-300 hover:text-brand-pink")}
+          >
             <ShoppingCart className="h-5 w-5" />
-          </Button>
+          </Link>
 
           {session?.user ? (
             <DropdownMenu>
@@ -81,14 +85,12 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button
-              render={<Link href="/login" />}
-              variant="outline"
-              size="sm"
-              className="border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10"
+            <Link
+              href="/login"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10")}
             >
               Iniciar sesion
-            </Button>
+            </Link>
           )}
         </div>
 
@@ -101,7 +103,7 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-neutral-800 bg-brand-dark px-4 pb-4 md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-50 border-t border-neutral-800 bg-brand-dark px-4 pb-4 shadow-2xl md:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -115,13 +117,21 @@ export function Navbar() {
           <div className="mt-4 flex gap-3 border-t border-neutral-800 pt-4">
             {session?.user ? (
               <>
-                <Button render={<Link href="/mis-citas" className="flex-1" onClick={() => setMobileOpen(false)} />} variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+                <Link
+                  href="/mis-citas"
+                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full border-brand-amber/30 text-brand-amber")}
+                  onClick={() => setMobileOpen(false)}
+                >
                   Mis Citas
-                </Button>
+                </Link>
                 {isAdmin && (
-                  <Button render={<Link href="/admin" className="flex-1" />} variant="outline" className="w-full" size="sm">
+                  <Link
+                    href="/admin"
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full")}
+                    onClick={() => setMobileOpen(false)}
+                  >
                     Panel Admin
-                  </Button>
+                  </Link>
                 )}
                 <Button
                   variant="ghost"
@@ -133,9 +143,13 @@ export function Navbar() {
                 </Button>
               </>
             ) : (
-              <Button render={<Link href="/login" className="flex-1" />} variant="outline" className="w-full border-brand-amber/30 text-brand-amber" size="sm">
+              <Link
+                href="/login"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 w-full border-brand-amber/30 text-brand-amber")}
+                onClick={() => setMobileOpen(false)}
+              >
                 Iniciar sesion
-              </Button>
+              </Link>
             )}
           </div>
         </div>

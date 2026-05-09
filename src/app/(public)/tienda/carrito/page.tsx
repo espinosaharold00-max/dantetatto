@@ -2,7 +2,8 @@
 
 import { Trash2, Minus, Plus, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCartStore } from "@/lib/cart-store";
 import { useState } from "react";
@@ -50,9 +51,9 @@ export default function CartPage() {
         <p className="mb-6 text-neutral-400">
           Explora nuestros productos Poly Love para el cuidado de tu tatuaje
         </p>
-        <Button render={<Link href="/tienda" />} className="bg-brand-pink text-white hover:bg-brand-pink-dark">
+        <Link href="/tienda" className={cn(buttonVariants(), "bg-brand-pink text-white hover:bg-brand-pink-dark")}>
           Ver productos
-        </Button>
+        </Link>
       </div>
     );
   }

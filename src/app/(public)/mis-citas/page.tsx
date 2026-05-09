@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { formatCOP } from "@/lib/format";
 
 /* ------------------------------------------------------------------ */
@@ -282,9 +283,9 @@ export default function MisCitasPage() {
             <p className="mb-6 text-sm text-neutral-400">
               Necesitas una cuenta para acceder a tu historial de citas y pagos.
             </p>
-            <Button render={<Link href="/login" />} className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
+            <Link href="/login" className={cn(buttonVariants(), "bg-brand-amber text-brand-dark hover:bg-brand-amber-dark")}>
               Iniciar sesión
-            </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -339,9 +340,9 @@ export default function MisCitasPage() {
             <p className="mb-6 text-sm text-neutral-400">
               Agenda tu primera cita y empieza tu proyecto de tatuaje.
             </p>
-            <Button render={<Link href="/agenda" />} className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark">
+            <Link href="/agenda" className={cn(buttonVariants(), "bg-brand-amber text-brand-dark hover:bg-brand-amber-dark")}>
               Agendar cita
-            </Button>
+            </Link>
           </CardContent>
         </Card>
       )}
