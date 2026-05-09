@@ -54,7 +54,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-brand-dark px-4">
+    <div className="dark flex min-h-screen items-center justify-center bg-brand-dark px-4">
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
         <CardHeader className="text-center">
           <Link href="/" className="mb-2 block">
