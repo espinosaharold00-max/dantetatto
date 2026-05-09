@@ -53,13 +53,13 @@ export default function AdminReviewsPage() {
                   className={`h-4 w-4 ${
                     i < review.rating
                       ? "fill-amber-400 text-amber-400"
-                      : "text-neutral-600"
+                      : "text-neutral-400"
                   }`}
                 />
               ))}
             </div>
             <p className="mb-2 text-sm text-neutral-300">{review.comment}</p>
-            <div className="flex items-center gap-2 text-xs text-neutral-500">
+            <div className="flex items-center gap-2 text-xs text-neutral-400">
               <span>{review.user.name || "Anónimo"}</span>
               <span>•</span>
               <span>

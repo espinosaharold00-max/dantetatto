@@ -59,7 +59,7 @@ export default function AdminClientsPage() {
       </div>
 
       <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
         <Input
           placeholder="Buscar por nombre o email..."
           value={search}
@@ -90,7 +90,7 @@ export default function AdminClientsPage() {
                   </p>
                   <p className="text-sm text-neutral-400">{client.email}</p>
                   {client.phone && (
-                    <p className="text-sm text-neutral-500">{client.phone}</p>
+                    <p className="text-sm text-neutral-400">{client.phone}</p>
                   )}
                 </div>
                 <div className="flex items-center gap-4 text-sm text-neutral-400">
@@ -102,7 +102,7 @@ export default function AdminClientsPage() {
                     <ShoppingCart className="h-3 w-3" />
                     {client._count.orders} pedidos
                   </div>
-                  <span className="text-xs text-neutral-600">
+                  <span className="text-xs text-neutral-400">
                     {format(new Date(client.createdAt), "d MMM yyyy", {
                       locale: es,
                     })}
@@ -114,7 +114,7 @@ export default function AdminClientsPage() {
         </div>
       )}
 
-      <p className="mt-4 text-sm text-neutral-500">
+      <p className="mt-4 text-sm text-neutral-400">
         {filtered.length} clientes
       </p>
     </div>

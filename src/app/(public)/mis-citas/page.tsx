@@ -107,9 +107,9 @@ function PaymentSummary({
     <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-sm ${colorClass}`}>
       <CreditCard className="h-4 w-4 shrink-0" />
       <span>Total: {formatCOP(totalPrice)}</span>
-      <span className="text-neutral-600">|</span>
+      <span className="text-neutral-400">|</span>
       <span>Pagado: {formatCOP(totalPaid)}</span>
-      <span className="text-neutral-600">|</span>
+      <span className="text-neutral-400">|</span>
       <span>Saldo: {formatCOP(balance)}</span>
     </div>
   );
@@ -152,7 +152,7 @@ function PaymentHistory({ payments }: { payments: Payment[] }) {
                 {methodLabels[p.method]}
               </Badge>
               {p.note && (
-                <span className="text-xs text-neutral-500">{p.note}</span>
+                <span className="text-xs text-neutral-400">{p.note}</span>
               )}
             </li>
           ))}
@@ -201,7 +201,7 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
 
         {/* Description */}
         {appointment.description && (
-          <p className="text-sm text-neutral-500 line-clamp-2">
+          <p className="text-sm text-neutral-400 line-clamp-2">
             {appointment.description}
           </p>
         )}
@@ -334,7 +334,7 @@ export default function MisCitasPage() {
       {!loading && !error && appointments.length === 0 && (
         <Card className="border-neutral-800 bg-neutral-900">
           <CardContent className="flex flex-col items-center py-12">
-            <CalendarPlus className="mb-4 h-12 w-12 text-neutral-600" />
+            <CalendarPlus className="mb-4 h-12 w-12 text-neutral-400" />
             <h2 className="mb-2 text-xl font-bold text-white">
               No tienes citas aún
             </h2>

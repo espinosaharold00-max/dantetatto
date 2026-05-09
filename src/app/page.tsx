@@ -74,16 +74,16 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/60">
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
             Since 2025
           </p>
           <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
             CAT & CO
           </h1>
-          <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/70 sm:text-xl">
+          <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/80 sm:text-xl">
             Tattoo Stuff
           </p>
-          <p className="mb-1 text-base text-brand-dark/50">
+          <p className="mb-1 text-base text-brand-dark/70">
             タトゥースタジオ
           </p>
           <p className="mx-auto mb-10 mt-6 max-w-xl text-lg text-brand-dark/80">
@@ -128,7 +128,7 @@ export default async function HomePage() {
             <h2 className="text-3xl font-black text-brand-cream sm:text-4xl">
               Nuestro trabajo
             </h2>
-            <p className="mt-2 text-neutral-500">
+            <p className="mt-2 text-neutral-400">
               タトゥースタジオ — Algunos de nuestros trabajos recientes
             </p>
           </div>
@@ -153,7 +153,7 @@ export default async function HomePage() {
                     key={i}
                     className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg border border-neutral-800 bg-neutral-900"
                   >
-                    <span className="text-sm text-neutral-600">
+                    <span className="text-sm text-neutral-400">
                       Portfolio {i + 1}
                     </span>
                   </div>
@@ -167,7 +167,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-brand-amber/20 bg-brand-dark">
-              <span className="text-neutral-600">Foto del artista</span>
+              <span className="text-neutral-400">Foto del artista</span>
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
@@ -211,7 +211,7 @@ export default async function HomePage() {
             <h2 className="mt-2 text-3xl font-black text-brand-cream sm:text-4xl">
               Lo que dicen nuestros amigos
             </h2>
-            <p className="mt-2 text-neutral-500">
+            <p className="mt-2 text-neutral-400">
               Resenas reales de personas reales
             </p>
           </div>
@@ -272,7 +272,7 @@ export default async function HomePage() {
       {/* CTA Final */}
       <section className="bg-brand-amber py-20">
         <div className="mx-auto max-w-3xl px-4 text-center">
-          <p className="mb-2 text-sm text-brand-dark/50">タトゥースタジオ</p>
+          <p className="mb-2 text-sm text-brand-dark/70">タトゥースタジオ</p>
           <h2 className="mb-4 text-3xl font-black text-brand-dark sm:text-4xl">
             Listo para tu proximo tatuaje?
           </h2>

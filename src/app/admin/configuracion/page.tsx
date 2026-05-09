@@ -214,7 +214,7 @@ export default function AdminConfigPage() {
                     }
                   />
                   <span
-                    className={`text-sm ${day.isActive ? "text-white" : "text-neutral-500"}`}
+                    className={`text-sm ${day.isActive ? "text-white" : "text-neutral-400"}`}
                   >
                     {dayNames[day.dayOfWeek]}
                   </span>
@@ -223,7 +223,7 @@ export default function AdminConfigPage() {
                 {day.isActive && (
                   <>
                     <div className="flex items-center gap-2">
-                      <Label className="text-xs text-neutral-500">De</Label>
+                      <Label className="text-xs text-neutral-400">De</Label>
                       <Input
                         type="time"
                         value={day.startTime}
@@ -234,7 +234,7 @@ export default function AdminConfigPage() {
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <Label className="text-xs text-neutral-500">A</Label>
+                      <Label className="text-xs text-neutral-400">A</Label>
                       <Input
                         type="time"
                         value={day.endTime}
@@ -245,7 +245,7 @@ export default function AdminConfigPage() {
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <Label className="text-xs text-neutral-500">
+                      <Label className="text-xs text-neutral-400">
                         Duración (min)
                       </Label>
                       <Input
@@ -285,11 +285,11 @@ export default function AdminConfigPage() {
           <CardContent className="space-y-4">
             {/* Existing blocked slots list */}
             {loadingBlocked ? (
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-neutral-400">
                 Cargando días bloqueados...
               </p>
             ) : blockedSlots.length === 0 ? (
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-neutral-400">
                 No hay horarios bloqueados
               </p>
             ) : (
@@ -321,7 +321,7 @@ export default function AdminConfigPage() {
                             </span>
                           )}
                           {slot.reason && (
-                            <span className="text-xs text-neutral-500">
+                            <span className="text-xs text-neutral-400">
                               — {slot.reason}
                             </span>
                           )}
@@ -348,7 +348,7 @@ export default function AdminConfigPage() {
               </p>
 
               <div>
-                <Label className="text-xs text-neutral-500">Fecha</Label>
+                <Label className="text-xs text-neutral-400">Fecha</Label>
                 <Input
                   type="date"
                   value={blockForm.date}
@@ -377,7 +377,7 @@ export default function AdminConfigPage() {
               {!blockForm.allDay && (
                 <div className="flex items-center gap-3">
                   <div className="flex-1">
-                    <Label className="text-xs text-neutral-500">
+                    <Label className="text-xs text-neutral-400">
                       Hora inicio
                     </Label>
                     <Input
@@ -393,7 +393,7 @@ export default function AdminConfigPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <Label className="text-xs text-neutral-500">
+                    <Label className="text-xs text-neutral-400">
                       Hora fin
                     </Label>
                     <Input
@@ -412,7 +412,7 @@ export default function AdminConfigPage() {
               )}
 
               <div>
-                <Label className="text-xs text-neutral-500">
+                <Label className="text-xs text-neutral-400">
                   Razón (opcional)
                 </Label>
                 <Input

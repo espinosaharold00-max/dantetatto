@@ -84,7 +84,7 @@ export default async function BlogPage({
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-neutral-600">
+                    <div className="flex h-full items-center justify-center text-neutral-400">
                       Sin imagen
                     </div>
                   )}
@@ -95,7 +95,7 @@ export default async function BlogPage({
                       {post.category}
                     </Badge>
                     {post.publishedAt && (
-                      <span className="text-xs text-neutral-500">
+                      <span className="text-xs text-neutral-400">
                         {format(post.publishedAt, "d MMM yyyy", {
                           locale: es,
                         })}

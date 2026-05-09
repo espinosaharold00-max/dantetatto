@@ -43,16 +43,16 @@ export default async function TiendaPage({
     <div className="min-h-screen">
       <div className="bg-brand-pink py-12">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-dark/50">
+          <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-dark/70">
             タトゥー用品
           </p>
           <h1 className="text-4xl font-black text-brand-dark sm:text-5xl">
             Poly Love
           </h1>
-          <p className="mt-1 text-sm font-medium uppercase tracking-widest text-brand-dark/60">
+          <p className="mt-1 text-sm font-medium uppercase tracking-widest text-brand-dark/80">
             Tattoo After Care
           </p>
-          <p className="mx-auto mt-4 max-w-md text-brand-dark/70">
+          <p className="mx-auto mt-4 max-w-md text-brand-dark/80">
             Productos profesionales para el cuidado de tu tatuaje
           </p>
         </div>
@@ -106,7 +106,7 @@ export default async function TiendaPage({
                         loading="lazy"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-neutral-600">
+                      <div className="flex h-full items-center justify-center text-neutral-400">
                         Sin imagen
                       </div>
                     )}
@@ -126,7 +126,7 @@ export default async function TiendaPage({
                         ${(product.price / 100).toFixed(2)}
                       </span>
                       {product.compareAtPrice && (
-                        <span className="text-sm text-neutral-500 line-through">
+                        <span className="text-sm text-neutral-400 line-through">
                           ${(product.compareAtPrice / 100).toFixed(2)}
                         </span>
                       )}

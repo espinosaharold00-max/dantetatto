@@ -257,7 +257,7 @@ export default function AdminAgendaPage() {
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4">
                     <div className="text-center">
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-neutral-400">
                         {format(new Date(apt.date), "EEE", { locale: es })}
                       </p>
                       <p className="text-lg font-bold text-white">
@@ -266,7 +266,7 @@ export default function AdminAgendaPage() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <User className="h-3 w-3 text-neutral-500" />
+                        <User className="h-3 w-3 text-neutral-400" />
                         <span className="font-medium text-white">
                           {apt.user.name || apt.user.email}
                         </span>
@@ -275,7 +275,7 @@ export default function AdminAgendaPage() {
                         <Clock className="h-3 w-3" />
                         {format(new Date(apt.startTime), "HH:mm")} —{" "}
                         {format(new Date(apt.endTime), "HH:mm")}
-                        <span className="text-neutral-600">•</span>
+                        <span className="text-neutral-400">•</span>
                         {typeLabels[apt.type]}
                       </div>
                     </div>
@@ -333,7 +333,7 @@ export default function AdminAgendaPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-xs uppercase text-neutral-500">Cliente</p>
+                <p className="text-xs uppercase text-neutral-400">Cliente</p>
                 <p className="font-medium text-white">
                   {selectedAppointment.user.name}
                 </p>
@@ -348,7 +348,7 @@ export default function AdminAgendaPage() {
               </div>
 
               <div>
-                <p className="text-xs uppercase text-neutral-500">
+                <p className="text-xs uppercase text-neutral-400">
                   Descripción
                 </p>
                 <p className="text-sm text-neutral-300">
@@ -357,7 +357,7 @@ export default function AdminAgendaPage() {
               </div>
 
               <div>
-                <p className="text-xs uppercase text-neutral-500">
+                <p className="text-xs uppercase text-neutral-400">
                   Zona del cuerpo
                 </p>
                 <p className="text-sm text-white">
@@ -367,7 +367,7 @@ export default function AdminAgendaPage() {
 
               {selectedAppointment.referenceImageUrl && (
                 <div>
-                  <p className="text-xs uppercase text-neutral-500">
+                  <p className="text-xs uppercase text-neutral-400">
                     Imagen de referencia
                   </p>
                   <img
@@ -379,7 +379,7 @@ export default function AdminAgendaPage() {
               )}
 
               <div>
-                <p className="mb-2 text-xs uppercase text-neutral-500">
+                <p className="mb-2 text-xs uppercase text-neutral-400">
                   Notas internas
                 </p>
                 <Textarea
@@ -412,7 +412,7 @@ export default function AdminAgendaPage() {
                       Establecer precio
                     </p>
                     <div>
-                      <Label className="text-xs text-neutral-500">
+                      <Label className="text-xs text-neutral-400">
                         Precio total
                       </Label>
                       <Input
@@ -430,7 +430,7 @@ export default function AdminAgendaPage() {
                       />
                     </div>
                     <div>
-                      <Label className="text-xs text-neutral-500">
+                      <Label className="text-xs text-neutral-400">
                         Abono inicial
                       </Label>
                       <Input
@@ -493,7 +493,7 @@ export default function AdminAgendaPage() {
                         Registrar abono
                       </p>
                       <div>
-                        <Label className="text-xs text-neutral-500">
+                        <Label className="text-xs text-neutral-400">
                           Monto
                         </Label>
                         <Input
@@ -511,7 +511,7 @@ export default function AdminAgendaPage() {
                         />
                       </div>
                       <div>
-                        <Label className="text-xs text-neutral-500">
+                        <Label className="text-xs text-neutral-400">
                           Método
                         </Label>
                         <Select
@@ -536,7 +536,7 @@ export default function AdminAgendaPage() {
                         </Select>
                       </div>
                       <div>
-                        <Label className="text-xs text-neutral-500">
+                        <Label className="text-xs text-neutral-400">
                           Nota (opcional)
                         </Label>
                         <Input
@@ -566,12 +566,12 @@ export default function AdminAgendaPage() {
 
                     {/* Payment history */}
                     {loadingPayments ? (
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-neutral-400">
                         Cargando pagos...
                       </p>
                     ) : payments.length > 0 ? (
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase text-neutral-500">
+                        <p className="text-xs font-medium uppercase text-neutral-400">
                           Historial de pagos
                         </p>
                         {payments.map((p) => (
@@ -583,7 +583,7 @@ export default function AdminAgendaPage() {
                               <p className="text-sm font-medium text-white">
                                 {formatCOP(p.amount)}
                               </p>
-                              <p className="text-xs text-neutral-500">
+                              <p className="text-xs text-neutral-400">
                                 {format(
                                   new Date(p.createdAt),
                                   "d MMM yyyy, HH:mm",
@@ -607,7 +607,7 @@ export default function AdminAgendaPage() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-neutral-400">
                         Sin pagos registrados
                       </p>
                     )}

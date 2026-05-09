@@ -20,7 +20,7 @@ const statusColors: Record<string, string> = {
   SHIPPED: "bg-blue-500/10 text-blue-500",
   DELIVERED: "bg-emerald-500/10 text-emerald-500",
   CANCELLED: "bg-red-500/10 text-red-500",
-  REFUNDED: "bg-neutral-500/10 text-neutral-500",
+  REFUNDED: "bg-neutral-500/10 text-neutral-400",
 };
 
 const statusLabels: Record<string, string> = {
@@ -107,7 +107,7 @@ export default function AdminOrdersPage() {
                     </p>
                     <div className="mt-2 space-y-1">
                       {order.items.map((item) => (
-                        <p key={item.id} className="text-xs text-neutral-500">
+                        <p key={item.id} className="text-xs text-neutral-400">
                           {item.product.name} x{item.quantity} — $
                           {((item.price * item.quantity) / 100).toFixed(2)}
                         </p>

@@ -106,11 +106,11 @@ export default function AdminDashboard() {
               <CardTitle className="text-sm font-medium text-neutral-400">
                 {card.title}
               </CardTitle>
-              <card.icon className="h-4 w-4 text-neutral-500" />
+              <card.icon className="h-4 w-4 text-neutral-400" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-white">{card.value}</div>
-              <p className="text-xs text-neutral-500">{card.sub}</p>
+              <p className="text-xs text-neutral-400">{card.sub}</p>
             </CardContent>
           </Card>
         ))}

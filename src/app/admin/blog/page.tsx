@@ -106,7 +106,7 @@ export default function AdminBlogPage() {
     const colors: Record<string, string> = {
       DRAFT: "bg-neutral-800 text-neutral-400",
       PUBLISHED: "bg-green-500/10 text-green-500",
-      ARCHIVED: "bg-neutral-800 text-neutral-500",
+      ARCHIVED: "bg-neutral-800 text-neutral-400",
     };
     const labels: Record<string, string> = {
       DRAFT: "Borrador",

@@ -59,7 +59,7 @@ export default function RegisterPage() {
         <CardHeader className="text-center">
           <Link href="/" className="mb-2 block">
             <span className="text-2xl font-black text-brand-amber">DANTETATTOO</span>
-            <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-500">Cat & Co — Tattoo Stuff</span>
+            <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-400">Cat & Co — Tattoo Stuff</span>
           </Link>
           <CardTitle className="text-lg text-neutral-300">
             Crear cuenta

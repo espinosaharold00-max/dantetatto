@@ -30,7 +30,7 @@ export function ProductDetail({ product }: { product: Product }) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-neutral-600">
+            <div className="flex h-full items-center justify-center text-neutral-400">
               Sin imagen
             </div>
           )}
@@ -69,7 +69,7 @@ export function ProductDetail({ product }: { product: Product }) {
             ${(product.price / 100).toFixed(2)}
           </span>
           {product.compareAtPrice && (
-            <span className="text-xl text-neutral-500 line-through">
+            <span className="text-xl text-neutral-400 line-through">
               ${(product.compareAtPrice / 100).toFixed(2)}
             </span>
           )}
@@ -98,7 +98,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
-              <span className="text-xs text-neutral-500">
+              <span className="text-xs text-neutral-400">
                 {product.stock} disponibles
               </span>
             </div>

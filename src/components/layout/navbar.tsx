@@ -34,7 +34,7 @@ export function Navbar() {
           <span className="text-xl font-bold tracking-tight text-brand-amber">
             CAT & CO
           </span>
-          <span className="hidden text-[10px] uppercase tracking-widest text-neutral-500 sm:block">
+          <span className="hidden text-[10px] uppercase tracking-widest text-neutral-400 sm:block">
             Tattoo Stuff
           </span>
         </Link>

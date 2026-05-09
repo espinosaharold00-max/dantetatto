@@ -18,7 +18,7 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           <div>
             <h3 className="text-lg font-bold text-brand-amber">CAT & CO</h3>
-            <p className="mt-1 text-xs uppercase tracking-widest text-neutral-500">
+            <p className="mt-1 text-xs uppercase tracking-widest text-neutral-400">
               Tattoo Stuff
             </p>
             <p className="mt-3 text-sm text-neutral-400">
@@ -64,7 +64,7 @@ export function Footer() {
             <h4 className="mb-3 text-sm font-semibold uppercase text-brand-pink">
               Poly Love
             </h4>
-            <p className="mb-2 text-xs text-neutral-500">Tattoo After Care</p>
+            <p className="mb-2 text-xs text-neutral-400">Tattoo After Care</p>
             <ul className="space-y-2">
               {["Cremas", "Protectores", "Jabones", "Kits"].map((cat) => (
                 <li key={cat}>
@@ -113,8 +113,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-xs text-neutral-500">
-          <span className="text-neutral-600">Since 2025</span>
+        <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-xs text-neutral-400">
+          <span className="text-neutral-400">Since 2025</span>
           {" — "}
           © {new Date().getFullYear()} Cat & Co. Todos los derechos reservados.
         </div>

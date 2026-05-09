@@ -15,7 +15,7 @@ export default function SobreMiPage() {
       <div className="grid items-start gap-12 md:grid-cols-2">
         <div className="sticky top-24">
           <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-800">
-            <span className="flex h-full items-center justify-center text-neutral-600">
+            <span className="flex h-full items-center justify-center text-neutral-400">
               Foto del artista
             </span>
           </div>

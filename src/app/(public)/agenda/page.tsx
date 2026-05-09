@@ -136,7 +136,7 @@ export default function AgendaPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-amber/60">
+        <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
           Cat & Co — Tattoo Stuff
         </p>
         <h1 className="text-4xl font-black text-white">Agenda tu cita</h1>
@@ -259,15 +259,15 @@ export default function AgendaPage() {
                 </CardHeader>
                 <CardContent>
                   {!selectedDate ? (
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-neutral-400">
                       Selecciona una fecha primero
                     </p>
                   ) : loadingSlots ? (
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-neutral-400">
                       Cargando horarios...
                     </p>
                   ) : slots.length === 0 ? (
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-neutral-400">
                       No hay horarios disponibles para esta fecha
                     </p>
                   ) : (
@@ -283,7 +283,7 @@ export default function AgendaPage() {
                               ? "border-brand-amber bg-brand-amber text-brand-dark"
                               : slot.available
                                 ? "border-neutral-700 text-neutral-300 hover:border-neutral-500"
-                                : "cursor-not-allowed border-neutral-800 text-neutral-600 line-through"
+                                : "cursor-not-allowed border-neutral-800 text-neutral-500 line-through"
                           }`}
                         >
                           {slot.startTime}
@@ -455,7 +455,7 @@ export default function AgendaPage() {
               <CardContent className="space-y-4">
                 <div className="grid gap-4 rounded-lg border border-neutral-800 bg-neutral-950 p-4 sm:grid-cols-2">
                   <div>
-                    <p className="text-xs uppercase text-neutral-500">
+                    <p className="text-xs uppercase text-neutral-400">
                       Tipo de cita
                     </p>
                     <p className="font-medium text-white">
@@ -467,7 +467,7 @@ export default function AgendaPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-neutral-500">Fecha</p>
+                    <p className="text-xs uppercase text-neutral-400">Fecha</p>
                     <p className="font-medium text-white">
                       {selectedDate &&
                         format(selectedDate, "EEEE d 'de' MMMM, yyyy", {
@@ -476,19 +476,19 @@ export default function AgendaPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-neutral-500">
+                    <p className="text-xs uppercase text-neutral-400">
                       Horario
                     </p>
                     <p className="font-medium text-white">{selectedSlot}</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-neutral-500">Zona</p>
+                    <p className="text-xs uppercase text-neutral-400">Zona</p>
                     <p className="font-medium text-white">
                       {form.getValues("bodyArea")}
                     </p>
                   </div>
                   <div className="sm:col-span-2">
-                    <p className="text-xs uppercase text-neutral-500">
+                    <p className="text-xs uppercase text-neutral-400">
                       Descripción
                     </p>
                     <p className="text-sm text-neutral-300">
@@ -498,7 +498,7 @@ export default function AgendaPage() {
                 </div>
 
                 <div className="rounded-lg border border-neutral-800 bg-neutral-950 p-4">
-                  <p className="text-xs uppercase text-neutral-500">
+                  <p className="text-xs uppercase text-neutral-400">
                     Datos de contacto
                   </p>
                   <p className="text-white">{form.getValues("name")}</p>

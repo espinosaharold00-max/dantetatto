@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="mb-3 flex items-center gap-3">
             <Badge variant="outline">{post.category}</Badge>
             {post.publishedAt && (
-              <span className="text-sm text-neutral-500">
+              <span className="text-sm text-neutral-400">
                 {format(post.publishedAt, "d 'de' MMMM, yyyy", {
                   locale: es,
                 })}

@@ -218,7 +218,7 @@ export default function AdminProductsPage() {
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-xs text-neutral-600">
+                      <div className="flex h-full items-center justify-center text-xs text-neutral-400">
                         img
                       </div>
                     )}
@@ -229,7 +229,7 @@ export default function AdminProductsPage() {
                         {product.name}
                       </span>
                       {!product.isActive && (
-                        <Badge variant="outline" className="text-xs text-neutral-500">
+                        <Badge variant="outline" className="text-xs text-neutral-400">
                           Inactivo
                         </Badge>
                       )}
@@ -253,7 +253,7 @@ export default function AdminProductsPage() {
                     {product.isActive ? (
                       <Eye className="h-4 w-4 text-green-400" />
                     ) : (
-                      <EyeOff className="h-4 w-4 text-neutral-500" />
+                      <EyeOff className="h-4 w-4 text-neutral-400" />
                     )}
                   </Button>
                   <Button

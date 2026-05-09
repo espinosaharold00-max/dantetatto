@@ -79,7 +79,7 @@ export default function CartPage() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-xs text-neutral-600">
+                    <div className="flex h-full items-center justify-center text-xs text-neutral-400">
                       Sin img
                     </div>
                   )}
@@ -118,7 +118,7 @@ export default function CartPage() {
                 </p>
                 <button
                   onClick={() => removeItem(item.product.id)}
-                  className="text-neutral-500 hover:text-red-400"
+                  className="text-neutral-400 hover:text-red-400"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -129,7 +129,7 @@ export default function CartPage() {
           <Button
             variant="ghost"
             onClick={clearCart}
-            className="text-sm text-neutral-500"
+            className="text-sm text-neutral-400"
           >
             Vaciar carrito
           </Button>

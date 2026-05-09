@@ -83,7 +83,7 @@ export default function AdminEmailsPage() {
                         {typeLabels[email.type] || email.type}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-neutral-400">
                       <Mail className="h-3 w-3" />
                       {email.to}
                       {email.error && (
@@ -94,7 +94,7 @@ export default function AdminEmailsPage() {
                     </div>
                   </div>
                 </div>
-                <span className="text-xs text-neutral-500">
+                <span className="text-xs text-neutral-400">
                   {format(new Date(email.sentAt), "d MMM HH:mm", {
                     locale: es,
                   })}
