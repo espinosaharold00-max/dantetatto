@@ -129,7 +129,7 @@ export default function AdminBlogPage() {
               <Plus className="h-4 w-4" />
               Nuevo post
           </DialogTrigger>
-          <DialogContent className="max-h-[90vh] overflow-y-auto border-neutral-800 bg-neutral-900 sm:max-w-2xl">
+          <DialogContent className="dark max-h-[90vh] overflow-y-auto border-neutral-800 bg-neutral-900 sm:max-w-2xl">
             <DialogHeader>
               <DialogTitle className="text-white">
                 {editing ? "Editar post" : "Nuevo post"}

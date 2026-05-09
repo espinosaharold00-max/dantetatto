@@ -35,7 +35,7 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   return (
-    <div className="flex min-h-screen bg-neutral-950">
+    <div className="dark flex min-h-screen bg-neutral-950">
       <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-neutral-800 bg-neutral-900">
         <div className="flex h-16 items-center justify-between border-b border-neutral-800 px-4">
           <span className="text-lg font-bold text-white">Admin</span>

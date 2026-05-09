@@ -120,7 +120,7 @@ export default function AdminProductsPage() {
               <Plus className="h-4 w-4" />
               Nuevo producto
           </DialogTrigger>
-          <DialogContent className="border-neutral-800 bg-neutral-900">
+          <DialogContent className="dark border-neutral-800 bg-neutral-900">
             <DialogHeader>
               <DialogTitle className="text-white">
                 {editing ? "Editar producto" : "Nuevo producto"}
