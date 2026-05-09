@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function VerifyPage() {
+function VerifyForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
@@ -62,6 +62,62 @@ export default function VerifyPage() {
     }
   };
 
+  if (success) {
+    return (
+      <div className="space-y-4 text-center">
+        <div className="rounded-lg border border-green-800 bg-green-950 p-4 text-sm text-green-400">
+          Email verificado correctamente. Redirigiendo...
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <p className="mb-4 text-center text-sm text-neutral-400">
+        Enviamos un código de 6 dígitos a{" "}
+        <span className="text-white">{email}</span>
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="rounded-lg border border-red-800 bg-red-950 p-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+
+        <div>
+          <Label htmlFor="code">Código de verificación</Label>
+          <Input
+            id="code"
+            value={code}
+            onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            placeholder="000000"
+            className="border-neutral-700 bg-neutral-800 text-center text-2xl tracking-[8px]"
+            autoFocus
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
+          disabled={loading || code.length !== 6}
+        >
+          {loading ? "Verificando..." : "Verificar"}
+        </Button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-neutral-400">
+        ¿No recibiste el código?{" "}
+        <Link href="/registro" className="text-brand-amber underline">
+          Intentar de nuevo
+        </Link>
+      </p>
+    </>
+  );
+}
+
+export default function VerifyPage() {
   return (
     <div className="dark flex min-h-screen items-center justify-center bg-brand-dark px-4">
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
@@ -75,55 +131,9 @@ export default function VerifyPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {success ? (
-            <div className="space-y-4 text-center">
-              <div className="rounded-lg border border-green-800 bg-green-950 p-4 text-sm text-green-400">
-                Email verificado correctamente. Redirigiendo...
-              </div>
-            </div>
-          ) : (
-            <>
-              <p className="mb-4 text-center text-sm text-neutral-400">
-                Enviamos un código de 6 dígitos a{" "}
-                <span className="text-white">{email}</span>
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {error && (
-                  <div className="rounded-lg border border-red-800 bg-red-950 p-3 text-sm text-red-400">
-                    {error}
-                  </div>
-                )}
-
-                <div>
-                  <Label htmlFor="code">Código de verificación</Label>
-                  <Input
-                    id="code"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                    placeholder="000000"
-                    className="border-neutral-700 bg-neutral-800 text-center text-2xl tracking-[8px]"
-                    autoFocus
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
-                  disabled={loading || code.length !== 6}
-                >
-                  {loading ? "Verificando..." : "Verificar"}
-                </Button>
-              </form>
-
-              <p className="mt-6 text-center text-sm text-neutral-400">
-                ¿No recibiste el código?{" "}
-                <Link href="/registro" className="text-brand-amber underline">
-                  Intentar de nuevo
-                </Link>
-              </p>
-            </>
-          )}
+          <Suspense fallback={<p className="text-center text-sm text-neutral-400">Cargando...</p>}>
+            <VerifyForm />
+          </Suspense>
         </CardContent>
       </Card>
     </div>
