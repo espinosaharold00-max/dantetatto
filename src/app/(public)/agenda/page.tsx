@@ -325,7 +325,7 @@ export default function AgendaPage() {
               <CardContent className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="name">Nombre completo</Label>
+                    <Label htmlFor="name" className="text-white">Nombre completo</Label>
                     <Input
                       id="name"
                       {...form.register("name")}
@@ -338,7 +338,7 @@ export default function AgendaPage() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-white">Email</Label>
                     <Input
                       id="email"
                       type="email"
@@ -355,7 +355,7 @@ export default function AgendaPage() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="phone">Teléfono</Label>
+                    <Label htmlFor="phone" className="text-white">Teléfono</Label>
                     <Input
                       id="phone"
                       {...form.register("phone")}
@@ -368,7 +368,7 @@ export default function AgendaPage() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="bodyArea">Zona del cuerpo</Label>
+                    <Label htmlFor="bodyArea" className="text-white">Zona del cuerpo</Label>
                     <Select
                       onValueChange={(v: string | null) => { if (v) form.setValue("bodyArea", v); }}
                     >
@@ -392,7 +392,7 @@ export default function AgendaPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="description">
+                  <Label htmlFor="description" className="text-white">
                     Describe tu diseño o idea
                   </Label>
                   <Textarea
