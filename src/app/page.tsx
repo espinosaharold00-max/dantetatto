@@ -287,8 +287,8 @@ export default async function HomePage() {
               <Image
                 src="/images/ubicacion.jpeg"
                 alt="Ubicación del estudio Dante Tattoo"
-                width={480}
-                height={600}
+                width={336}
+                height={420}
                 className="w-full rounded-2xl object-cover"
               />
             </div>
