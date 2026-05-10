@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,7 +55,8 @@ export default function ForgotPasswordPage() {
     <div className="dark flex min-h-screen items-center justify-center bg-brand-dark px-4">
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
         <CardHeader className="text-center">
-          <Link href="/" className="mb-2 block">
+          <Link href="/" className="mb-2 flex flex-col items-center gap-2">
+            <Image src="/images/logo-cat.png" alt="Dante Tattoo" width={64} height={45} className="h-11 w-auto" />
             <span className="text-2xl font-black text-brand-amber">DANTE TATTOO</span>
             <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-400">Estudio de Tatuaje</span>
           </Link>

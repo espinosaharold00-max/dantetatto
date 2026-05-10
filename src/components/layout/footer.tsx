@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -17,7 +18,10 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
+            <div className="flex items-center gap-2">
+              <Image src="/images/logo-cat.png" alt="Dante Tattoo" width={36} height={25} className="h-6 w-auto" />
+              <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
+            </div>
             <p className="mt-3 text-sm text-neutral-400">
               Haciendo amigos, no clientes.
             </p>
@@ -111,7 +115,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-xs text-neutral-400">
-          <span className="text-neutral-400">Since 2025</span>
+          <span className="text-neutral-400">Since 2017</span>
           {" — "}
           © {new Date().getFullYear()} Dante Tattoo. Todos los derechos reservados.
         </div>

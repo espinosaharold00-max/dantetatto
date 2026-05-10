@@ -76,7 +76,7 @@ export default async function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
-            Since 2025
+            Since 2017
           </p>
           <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
             DANTE TATTOO
@@ -164,7 +164,7 @@ export default async function HomePage() {
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
-                Dante Tattoo — Since 2025
+                Dante Tattoo — Since 2017
               </span>
               <h2 className="mb-4 mt-2 text-3xl font-black text-brand-cream">
                 Sobre el artista
