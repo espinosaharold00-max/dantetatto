@@ -79,7 +79,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-          <Image src="/images/logo.png" alt="Dante Tattoo" width={375} height={375} className="mx-auto mb-6 rounded-full shadow-2xl ring-4 ring-brand-dark/10" priority />
+          <Image src="/images/logo.png" alt="Dante Tattoo" width={280} height={280} className="mx-auto mb-6 rounded-full shadow-2xl ring-4 ring-brand-dark/10" priority />
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
             Since 2017
           </p>
@@ -287,8 +287,8 @@ export default async function HomePage() {
               <Image
                 src="/images/ubicacion.jpeg"
                 alt="Ubicación del estudio Dante Tattoo"
-                width={800}
-                height={1000}
+                width={480}
+                height={600}
                 className="w-full rounded-2xl object-cover"
               />
             </div>

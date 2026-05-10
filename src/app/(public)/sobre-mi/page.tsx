@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Sobre mí",
   description:
