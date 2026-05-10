@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { Save, Upload, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageCropper } from "@/components/admin/image-cropper";
 
 interface AboutData {
   title: string;
@@ -49,8 +50,6 @@ export default function AdminSobreMiPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("/api/site-settings?key=about")
@@ -61,26 +60,6 @@ export default function AdminSobreMiPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      if (res.ok) {
-        const { url } = await res.json();
-        setData((d) => ({ ...d, artistPhotoUrl: url }));
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -132,35 +111,13 @@ export default function AdminSobreMiPage() {
             <CardTitle className="text-white">Foto del artista</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-6">
-              {data.artistPhotoUrl ? (
-                <div className="h-40 w-40 shrink-0 overflow-hidden rounded-2xl border border-neutral-700">
-                  <img src={data.artistPhotoUrl} alt="Artista" className="h-full w-full object-cover" />
-                </div>
-              ) : (
-                <div className="flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-neutral-700 bg-neutral-800 text-neutral-400">
-                  Sin foto
-                </div>
-              )}
-              <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed border-neutral-700 px-6 py-4 text-neutral-400 transition-colors hover:border-brand-amber hover:text-brand-amber">
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleUpload}
-                  disabled={uploading}
-                />
-                {uploading ? (
-                  <span className="text-sm">Subiendo...</span>
-                ) : (
-                  <>
-                    <Upload className="h-5 w-5" />
-                    <span className="text-sm">{data.artistPhotoUrl ? "Cambiar foto" : "Subir foto"}</span>
-                  </>
-                )}
-              </label>
-            </div>
+            <p className="mb-3 text-sm text-neutral-400">Se recorta a proporción 3:4 para mantener uniformidad.</p>
+            <ImageCropper
+              aspectRatio={3 / 4}
+              currentImage={data.artistPhotoUrl || undefined}
+              onUploadComplete={(url) => setData((d) => ({ ...d, artistPhotoUrl: url }))}
+              label={data.artistPhotoUrl ? "Cambiar foto" : "Subir foto"}
+            />
           </CardContent>
         </Card>
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { Plus, Edit, Trash2, Eye, EyeOff, Upload, GripVertical } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Plus, Edit, Trash2, Eye, EyeOff, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageCropper } from "@/components/admin/image-cropper";
 
 interface PortfolioItem {
   id: string;
@@ -32,8 +33,6 @@ export default function AdminPortfolioPage() {
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<PortfolioItem | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -55,26 +54,6 @@ export default function AdminPortfolioPage() {
   const resetForm = () => {
     setForm({ title: "", description: "", imageUrl: "", category: "", sortOrder: "0" });
     setEditing(null);
-  };
-
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      if (res.ok) {
-        const { url } = await res.json();
-        setForm((f) => ({ ...f, imageUrl: url }));
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
   };
 
   const handleSubmit = async () => {
@@ -161,31 +140,14 @@ export default function AdminPortfolioPage() {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label className="text-white">Imagen</Label>
-                <div className="mt-2 flex items-center gap-3">
-                  {form.imageUrl ? (
-                    <div className="relative h-32 w-32 overflow-hidden rounded-lg border border-neutral-700">
-                      <img src={form.imageUrl} alt="Preview" className="h-full w-full object-cover" />
-                    </div>
-                  ) : null}
-                  <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed border-neutral-700 px-4 py-3 text-neutral-400 transition-colors hover:border-brand-amber hover:text-brand-amber">
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleUpload}
-                      disabled={uploading}
-                    />
-                    {uploading ? (
-                      <span className="text-sm">Subiendo...</span>
-                    ) : (
-                      <>
-                        <Upload className="h-4 w-4" />
-                        <span className="text-sm">{form.imageUrl ? "Cambiar" : "Subir imagen"}</span>
-                      </>
-                    )}
-                  </label>
+                <Label className="text-white">Imagen (se recorta a proporción 3:4)</Label>
+                <div className="mt-2">
+                  <ImageCropper
+                    aspectRatio={3 / 4}
+                    currentImage={form.imageUrl || undefined}
+                    onUploadComplete={(url) => setForm((f) => ({ ...f, imageUrl: url }))}
+                    label={form.imageUrl ? "Cambiar imagen" : "Subir imagen"}
+                  />
                 </div>
               </div>
 
