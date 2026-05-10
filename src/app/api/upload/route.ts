@@ -4,7 +4,9 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
 
-const UPLOAD_DIR = join(process.cwd(), "uploads");
+export const runtime = "nodejs";
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR || join(process.cwd(), "uploads");
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -20,7 +22,10 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No se envió archivo" },
+        { status: 400 }
+      );
     }
 
     if (!file.type.startsWith("image/")) {
@@ -54,9 +59,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url, filename });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json(
-      { error: "Error al subir el archivo" },
-      { status: 500 }
-    );
+    const message =
+      error instanceof Error ? error.message : "Error al subir el archivo";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

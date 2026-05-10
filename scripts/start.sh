@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+echo "=== [deploy] Creando directorio de uploads ==="
+mkdir -p /app/uploads
+
 echo "=== [deploy] Inicializando base de datos ==="
 node scripts/init-db.mjs
 
