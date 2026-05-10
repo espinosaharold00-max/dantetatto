@@ -11,7 +11,6 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com";
 
 interface EmailLayoutProps {
   preview: string;
