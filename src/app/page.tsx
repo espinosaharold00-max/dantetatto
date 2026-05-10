@@ -35,7 +35,7 @@ export default async function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TattooParlor",
-    name: "Cat & Co Tattoo Stuff",
+    name: "Dante Tattoo",
     description:
       "Estudio de tatuaje profesional. Haciendo amigos, no clientes.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com",
@@ -79,13 +79,10 @@ export default async function HomePage() {
             Since 2025
           </p>
           <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
-            CAT & CO
+            DANTE TATTOO
           </h1>
           <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/80 sm:text-xl">
-            Tattoo Stuff
-          </p>
-          <p className="mb-1 text-base text-brand-dark/70">
-            タトゥースタジオ
+            Estudio de Tatuaje
           </p>
           <p className="mx-auto mb-10 mt-6 max-w-xl text-lg text-brand-dark/80">
             Haciendo amigos, no clientes. Cada tatuaje cuenta una historia.
@@ -167,7 +164,7 @@ export default async function HomePage() {
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
-                Cat Company — Since 2025
+                Dante Tattoo — Since 2025
               </span>
               <h2 className="mb-4 mt-2 text-3xl font-black text-brand-cream">
                 Sobre el artista

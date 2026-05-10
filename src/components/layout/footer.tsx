@@ -17,10 +17,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="text-lg font-bold text-brand-amber">CAT & CO</h3>
-            <p className="mt-1 text-xs uppercase tracking-widest text-neutral-400">
-              Tattoo Stuff
-            </p>
+            <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
             <p className="mt-3 text-sm text-neutral-400">
               Haciendo amigos, no clientes.
             </p>
@@ -116,7 +113,7 @@ export function Footer() {
         <div className="mt-8 border-t border-neutral-800 pt-8 text-center text-xs text-neutral-400">
           <span className="text-neutral-400">Since 2025</span>
           {" — "}
-          © {new Date().getFullYear()} Cat & Co. Todos los derechos reservados.
+          © {new Date().getFullYear()} Dante Tattoo. Todos los derechos reservados.
         </div>
       </div>
     </footer>

@@ -41,10 +41,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-xl font-bold tracking-tight text-brand-amber">
-            CAT & CO
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-widest text-neutral-400 sm:block">
-            Tattoo Stuff
+            DANTE TATTOO
           </span>
         </Link>
 

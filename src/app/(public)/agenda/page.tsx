@@ -137,7 +137,7 @@ export default function AgendaPage() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
-          Cat & Co — Tattoo Stuff
+          Dante Tattoo — Estudio de Tatuaje
         </p>
         <h1 className="text-4xl font-black text-white">Agenda tu cita</h1>
         <p className="mt-2 text-neutral-400">

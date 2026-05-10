@@ -298,7 +298,7 @@ export default function MisCitasPage() {
       {/* Header */}
       <div className="mb-8">
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-amber/60">
-          Cat & Co — Tattoo Stuff
+          Dante Tattoo — Estudio de Tatuaje
         </p>
         <h1 className="text-4xl font-black text-white">Mis Citas</h1>
         <p className="mt-2 text-neutral-400">
