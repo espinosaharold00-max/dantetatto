@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Poly Love — Tattoo After Care",
+  title: "PolyLove — Tattoo After Care",
   description:
     "Productos profesionales para el cuidado de tu tatuaje: cremas, jabones, protectores y kits completos.",
 };
@@ -55,12 +55,12 @@ export default async function TiendaPage({
     <div className="min-h-screen text-brand-pink">
       <div className="bg-brand-pink py-12">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <Image src="/images/logo-polylove.png" alt="Poly Love" width={80} height={80} className="mx-auto mb-3 rounded-full shadow-lg object-cover" />
+          <Image src="/images/logo-polylove.png" alt="PolyLove" width={80} height={80} className="mx-auto mb-3 rounded-full shadow-lg object-cover" />
           <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-dark/70">
             タトゥー用品
           </p>
           <h1 className="text-4xl font-black text-brand-dark sm:text-5xl">
-            Poly Love
+            PolyLove
           </h1>
           <p className="mt-1 text-sm font-medium uppercase tracking-widest text-brand-dark/80">
             Tattoo After Care

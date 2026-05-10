@@ -133,7 +133,7 @@ export default function AdminOrdersPage() {
       </head><body>
       <div class="header">
         <h1>DANTE TATTOO</h1>
-        <p>Estudio de Tatuaje — Poly Love After Care</p>
+        <p>Estudio de Tatuaje — PolyLove After Care</p>
       </div>
       <div class="info">
         <div>

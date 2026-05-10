@@ -64,9 +64,9 @@ export function Footer() {
 
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <Image src="/images/logo-polylove.png" alt="Poly Love" width={28} height={28} className="rounded-full object-cover" />
+              <Image src="/images/logo-polylove.png" alt="PolyLove" width={28} height={28} className="rounded-full object-cover" />
               <h4 className="text-sm font-semibold uppercase text-brand-pink">
-                Poly Love
+                PolyLove
               </h4>
             </div>
             <p className="mb-2 text-xs text-neutral-400">Tattoo After Care</p>

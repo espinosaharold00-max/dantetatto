@@ -91,7 +91,7 @@ export default function CartPage() {
         <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-brand-pink/30" />
         <h1 className="mb-2 text-2xl font-bold text-white">Tu carrito está vacío</h1>
         <p className="mb-6 text-neutral-400">
-          Explora nuestros productos Poly Love para el cuidado de tu tatuaje
+          Explora nuestros productos PolyLove para el cuidado de tu tatuaje
         </p>
         <Link href="/tienda" className={cn(buttonVariants(), "bg-brand-pink text-white hover:bg-brand-pink-dark")}>
           Ver productos
