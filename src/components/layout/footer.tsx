@@ -64,7 +64,7 @@ export function Footer() {
 
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <Image src="/images/logo-polylove.png" alt="PolyLove" width={28} height={28} className="rounded-full object-cover" />
+              <Image src="/images/logo-polylove.png" alt="PolyLove" width={52} height={52} className="rounded-full object-cover ring-2 ring-brand-pink/20" />
               <h4 className="text-sm font-semibold uppercase text-brand-pink">
                 PolyLove
               </h4>
