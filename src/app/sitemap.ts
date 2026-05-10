@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com";
 
   const posts = await prisma.post.findMany({
     where: { status: "PUBLISHED" },

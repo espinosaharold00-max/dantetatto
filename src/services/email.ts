@@ -30,7 +30,7 @@ export async function sendAppointmentConfirmation(appointment: {
   type: string;
   user: { name: string | null; email: string };
 }) {
-  const subject = "Confirmación de tu cita — Dante Tatto";
+  const subject = "Confirmación de tu cita — Dante Tattoo";
   try {
     const result = await resend.emails.send({
       from: FROM_EMAIL,
@@ -75,7 +75,7 @@ export async function sendAdminNewAppointmentNotification(appointment: {
   user: { name: string | null; email: string; phone: string | null };
 }) {
   const adminEmail = process.env.ADMIN_EMAIL || "admin@dantetattoo.com";
-  const subject = "Nueva cita registrada — Dante Tatto";
+  const subject = "Nueva cita registrada — Dante Tattoo";
 
   try {
     const result = await resend.emails.send({
@@ -128,7 +128,7 @@ export async function sendAppointmentReminder(
     hoursBeforeLabel === "48h"
       ? "APPOINTMENT_REMINDER_48H"
       : "APPOINTMENT_REMINDER_2H";
-  const subject = `Recordatorio: Tu cita es ${hoursBeforeLabel === "48h" ? "en 2 días" : "en 2 horas"} — Dante Tatto`;
+  const subject = `Recordatorio: Tu cita es ${hoursBeforeLabel === "48h" ? "en 2 días" : "en 2 horas"} — Dante Tattoo`;
 
   try {
     const result = await resend.emails.send({
@@ -178,8 +178,8 @@ export async function sendAppointmentStatusEmail(
       : "APPOINTMENT_CANCELLED";
   const subject =
     newStatus === "CONFIRMED"
-      ? "¡Tu cita ha sido confirmada! — Dante Tatto"
-      : "Tu cita ha sido cancelada — Dante Tatto";
+      ? "¡Tu cita ha sido confirmada! — Dante Tattoo"
+      : "Tu cita ha sido cancelada — Dante Tattoo";
 
   try {
     const result = await resend.emails.send({
@@ -219,7 +219,7 @@ export async function sendPostAppointmentEmail(appointment: {
   user: { name: string | null; email: string };
 }) {
   const subject =
-    "¡Gracias por visitarnos! Cuida tu nuevo tatuaje — Dante Tatto";
+    "¡Gracias por visitarnos! Cuida tu nuevo tatuaje — Dante Tattoo";
 
   try {
     const result = await resend.emails.send({
@@ -255,7 +255,7 @@ export async function sendOrderConfirmationEmail(order: {
   user: { name: string | null; email: string };
   items: { product: { name: string }; quantity: number; price: number }[];
 }) {
-  const subject = "Confirmación de pedido — Dante Tatto";
+  const subject = "Confirmación de pedido — Dante Tattoo";
 
   try {
     const result = await resend.emails.send({

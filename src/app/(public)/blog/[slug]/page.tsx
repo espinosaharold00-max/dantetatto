@@ -45,7 +45,7 @@ export default async function BlogPostPage({ params }: Props) {
     datePublished: post.publishedAt?.toISOString(),
     author: {
       "@type": "Person",
-      name: post.authorName || "Dante Tatto",
+      name: post.authorName || "Dante Tattoo",
     },
     image: post.coverImage,
   };

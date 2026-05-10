@@ -2,7 +2,7 @@ import { Section, Text, Heading, Link } from "@react-email/components";
 import * as React from "react";
 import { EmailLayout } from "./layout";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com";
 
 interface PasswordResetEmailProps {
   name: string;
@@ -13,7 +13,7 @@ export function PasswordResetEmail({ name, token }: PasswordResetEmailProps) {
   const resetUrl = `${baseUrl}/recuperar/${token}`;
 
   return (
-    <EmailLayout preview="Restablecer tu contraseña — Dante Tatto">
+    <EmailLayout preview="Restablecer tu contraseña — Dante Tattoo">
       <Heading style={heading}>Restablecer contraseña</Heading>
       <Text style={text}>
         Hola {name}, recibimos una solicitud para restablecer tu contraseña.

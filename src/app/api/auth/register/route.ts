@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       const { data: emailData, error: emailErr } = await resend.emails.send({
         from: FROM_EMAIL,
         to: data.email,
-        subject: "Verifica tu cuenta — Dante Tatto",
+        subject: "Verifica tu cuenta — Dante Tattoo",
         react: VerificationCodeEmail({ name: data.name, code }),
       });
 
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
           data: {
             to: data.email,
             type: "EMAIL_VERIFICATION",
-            subject: "Verifica tu cuenta — Dante Tatto",
+            subject: "Verifica tu cuenta — Dante Tattoo",
             error: JSON.stringify(emailErr),
           },
         });
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
           data: {
             to: data.email,
             type: "EMAIL_VERIFICATION",
-            subject: "Verifica tu cuenta — Dante Tatto",
+            subject: "Verifica tu cuenta — Dante Tattoo",
             resendId: emailData?.id,
           },
         });
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
         data: {
           to: data.email,
           type: "EMAIL_VERIFICATION",
-          subject: "Verifica tu cuenta — Dante Tatto",
+          subject: "Verifica tu cuenta — Dante Tattoo",
           error: String(emailError),
         },
       });

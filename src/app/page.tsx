@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Star, ArrowRight, Calendar, ShoppingBag, Zap } from "lucide-react";
@@ -38,7 +39,7 @@ export default async function HomePage() {
     name: "Dante Tattoo",
     description:
       "Estudio de tatuaje profesional. Haciendo amigos, no clientes.",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com",
     telephone: process.env.NEXT_PUBLIC_BUSINESS_PHONE,
     address: {
       "@type": "PostalAddress",
@@ -75,6 +76,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          <Image src="/images/logo-cat.png" alt="Dante Tattoo" width={120} height={84} className="mx-auto mb-4 h-20 w-auto drop-shadow-lg sm:h-28" />
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
             Since 2017
           </p>

@@ -12,7 +12,7 @@ export function VerificationCodeEmail({ name, code }: VerificationCodeEmailProps
     <EmailLayout preview={`Tu código de verificación: ${code}`}>
       <Heading style={heading}>Verifica tu email</Heading>
       <Text style={text}>
-        Hola {name}, bienvenido a Dante Tatto.
+        Hola {name}, bienvenido a Dante Tattoo.
       </Text>
       <Text style={text}>
         Usa el siguiente código para verificar tu cuenta:

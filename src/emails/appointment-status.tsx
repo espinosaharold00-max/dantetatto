@@ -60,7 +60,7 @@ export function AppointmentStatusUpdate({
           <Section style={buttonContainer}>
             <Button
               style={button}
-              href={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com"}/agenda`}
+              href={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com"}/agenda`}
             >
               Reagendar cita
             </Button>

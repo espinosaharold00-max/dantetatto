@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       const { data: emailData, error: emailErr } = await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
-        subject: "Restablecer contraseña — Dante Tatto",
+        subject: "Restablecer contraseña — Dante Tattoo",
         react: PasswordResetEmail({ name: user.name || "Usuario", token }),
       });
 
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
           data: {
             to: email,
             type: "PASSWORD_RESET",
-            subject: "Restablecer contraseña — Dante Tatto",
+            subject: "Restablecer contraseña — Dante Tattoo",
             error: JSON.stringify(emailErr),
           },
         });
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
           data: {
             to: email,
             type: "PASSWORD_RESET",
-            subject: "Restablecer contraseña — Dante Tatto",
+            subject: "Restablecer contraseña — Dante Tattoo",
             resendId: emailData?.id,
           },
         });
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         data: {
           to: email,
           type: "PASSWORD_RESET",
-          subject: "Restablecer contraseña — Dante Tatto",
+          subject: "Restablecer contraseña — Dante Tattoo",
           error: String(emailError),
         },
       });

@@ -68,7 +68,7 @@ export function AdminNewAppointment({
       <Section style={buttonContainer}>
         <Button
           style={button}
-          href={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com"}/admin/agenda`}
+          href={`${process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com"}/admin/agenda`}
         >
           Ver en agenda
         </Button>

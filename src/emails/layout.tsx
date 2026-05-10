@@ -12,7 +12,7 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com";
 
 interface EmailLayoutProps {
   preview: string;
@@ -28,10 +28,10 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
         <Container style={container}>
           <Section style={header}>
             <Img
-              src={`${baseUrl}/images/logo.png`}
-              width="150"
-              height="50"
-              alt="Dante Tatto"
+              src={`${baseUrl}/images/logo-cat.png`}
+              width="60"
+              height="42"
+              alt="Dante Tattoo"
               style={logo}
             />
           </Section>
@@ -42,7 +42,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
 
           <Section style={footer}>
             <Text style={footerText}>
-              Dante Tatto — &quot;Haciendo amigos, no clientes&quot;
+              Dante Tattoo — &quot;Haciendo amigos, no clientes&quot;
             </Text>
             <Text style={footerAddress}>
               {process.env.NEXT_PUBLIC_BUSINESS_ADDRESS || "Dirección del estudio"}
@@ -61,7 +61,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
               </Link>
             </Section>
             <Text style={footerSmall}>
-              © {new Date().getFullYear()} Dante Tatto. Todos los derechos
+              © {new Date().getFullYear()} Dante Tattoo. Todos los derechos
               reservados.
             </Text>
           </Section>

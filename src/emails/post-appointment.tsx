@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function PostAppointment({ clientName }: Props) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com";
 
   return (
     <EmailLayout preview="¡Gracias por visitarnos! Cuida tu nuevo tatuaje">

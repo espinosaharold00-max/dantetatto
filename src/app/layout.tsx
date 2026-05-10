@@ -7,25 +7,25 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Dante Tatto — Haciendo amigos, no clientes",
-    template: "%s | Dante Tatto",
+    default: "Dante Tattoo — Haciendo amigos, no clientes",
+    template: "%s | Dante Tattoo",
   },
   description:
     "Estudio de tatuaje profesional. Diseños únicos y personalizados. Agenda tu cita hoy.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://dantetatto.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://dantetattoo.com"
   ),
   openGraph: {
     type: "website",
     locale: "es_MX",
-    siteName: "Dante Tatto",
-    title: "Dante Tatto — Haciendo amigos, no clientes",
+    siteName: "Dante Tattoo",
+    title: "Dante Tattoo — Haciendo amigos, no clientes",
     description:
       "Estudio de tatuaje profesional. Diseños únicos y personalizados.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dante Tatto",
+    title: "Dante Tattoo",
     description: "Haciendo amigos, no clientes",
   },
   robots: {

@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Sobre mí",
   description:
-    "Conoce la historia detrás de Dante Tatto. Arte, pasión y compromiso con cada pieza.",
+    "Conoce la historia detrás de Dante Tattoo. Arte, pasión y compromiso con cada pieza.",
 };
 
 export default function SobreMiPage() {
@@ -29,7 +29,7 @@ export default function SobreMiPage() {
 
           <div className="space-y-4 text-neutral-400">
             <p>
-              Bienvenido a Dante Tatto, donde cada trazo tiene un propósito y
+              Bienvenido a Dante Tattoo, donde cada trazo tiene un propósito y
               cada pieza cuenta una historia. Mi filosofía es simple:{" "}
               <strong className="text-white">
                 hacemos amigos, no clientes
