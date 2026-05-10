@@ -4,7 +4,6 @@ import {
   Head,
   Hr,
   Html,
-  Img,
   Link,
   Preview,
   Section,
@@ -27,13 +26,7 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Img
-              src={`${baseUrl}/images/logo-cat.png`}
-              width="60"
-              height="42"
-              alt="Dante Tattoo"
-              style={logo}
-            />
+            <Text style={headerTitle}>DANTE TATTOO</Text>
           </Section>
 
           <Section style={content}>{children}</Section>
@@ -90,8 +83,13 @@ const header = {
   textAlign: "center" as const,
 };
 
-const logo = {
-  margin: "0 auto",
+const headerTitle = {
+  color: "#F0A030",
+  fontSize: "22px",
+  fontWeight: "800" as const,
+  letterSpacing: "2px",
+  margin: "0",
+  textAlign: "center" as const,
 };
 
 const content = {

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+
 import { MapPin, Phone, Mail } from "lucide-react";
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -18,10 +18,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2">
-              <Image src="/images/logo-cat.png" alt="Dante Tattoo" width={36} height={25} className="h-6 w-auto" />
-              <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
-            </div>
+            <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
             <p className="mt-3 text-sm text-neutral-400">
               Haciendo amigos, no clientes.
             </p>
