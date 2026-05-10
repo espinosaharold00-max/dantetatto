@@ -4,6 +4,8 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
 
+const UPLOAD_DIR = join(process.cwd(), "uploads");
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (
@@ -28,10 +30,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const maxSize = 50 * 1024 * 1024; // 50MB
+    const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "El archivo es muy grande. Máximo 10MB." },
+        { error: "El archivo es muy grande. Máximo 50MB." },
         { status: 400 }
       );
     }
@@ -42,13 +44,12 @@ export async function POST(req: NextRequest) {
     const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
     const filename = `${randomUUID()}.${ext}`;
 
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
+    await mkdir(UPLOAD_DIR, { recursive: true });
 
-    const filepath = join(uploadDir, filename);
+    const filepath = join(UPLOAD_DIR, filename);
     await writeFile(filepath, buffer);
 
-    const url = `/uploads/${filename}`;
+    const url = `/api/uploads/${filename}`;
 
     return NextResponse.json({ url, filename });
   } catch (error) {

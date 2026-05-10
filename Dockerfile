@@ -34,6 +34,9 @@ RUN chmod +x scripts/start.sh
 # bcryptjs para el seed (pg ya viene en standalone)
 COPY --from=builder /app/node_modules/bcryptjs ./node_modules/bcryptjs
 
+# Directorio de uploads persistente (montar volumen aquí)
+RUN mkdir -p /app/uploads && chown nextjs:nodejs /app/uploads
+
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
