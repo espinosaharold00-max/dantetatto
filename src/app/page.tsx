@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 async function getPublicData() {
   try {
-    const [reviews, portfolioItems] = await Promise.all([
+    const [reviews, portfolioItems, aboutSetting] = await Promise.all([
       prisma.review.findMany({
         where: { status: "APPROVED" },
         include: { user: { select: { name: true, image: true } } },
@@ -24,15 +24,17 @@ async function getPublicData() {
         orderBy: { sortOrder: "asc" },
         take: 8,
       }),
+      prisma.siteSetting.findUnique({ where: { key: "about" } }),
     ]);
-    return { reviews, portfolioItems };
+    const about = aboutSetting ? JSON.parse(aboutSetting.value) : null;
+    return { reviews, portfolioItems, about };
   } catch {
-    return { reviews: [], portfolioItems: [] };
+    return { reviews: [], portfolioItems: [], about: null };
   }
 }
 
 export default async function HomePage() {
-  const { reviews, portfolioItems } = await getPublicData();
+  const { reviews, portfolioItems, about } = await getPublicData();
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -162,32 +164,31 @@ export default async function HomePage() {
       <section className="border-t border-neutral-800 bg-neutral-900 py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 md:grid-cols-2">
-            <div className="flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-brand-amber/20 bg-brand-dark">
-              <span className="text-neutral-400">Foto del artista</span>
+            <div className="aspect-square overflow-hidden rounded-2xl border border-brand-amber/20 bg-brand-dark">
+              {about?.artistPhotoUrl ? (
+                <img src={about.artistPhotoUrl} alt="Artista" className="h-full w-full object-cover" />
+              ) : (
+                <span className="flex h-full items-center justify-center text-neutral-400">Foto del artista</span>
+              )}
             </div>
             <div>
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
-                Dante Tattoo — Since 2017
+                {about?.subtitle || "Dante Tattoo — Since 2017"}
               </span>
               <h2 className="mb-4 mt-2 text-3xl font-black text-brand-cream">
-                Sobre el artista
+                {about?.title || "Sobre el artista"}
               </h2>
               <p className="mb-4 text-neutral-400">
-                Con anos de experiencia en el arte del tatuaje, cada pieza que
-                creo es una colaboracion entre el artista y la persona. Mi
-                filosofia es simple: aqui no tienes citas, tienes encuentros con
-                un amigo.
+                {about?.homePreviewText || "Con años de experiencia en el arte del tatuaje, cada pieza que creo es una colaboración entre el artista y la persona. Mi filosofía es simple: aquí no tienes citas, tienes encuentros con un amigo."}
               </p>
               <p className="mb-6 text-neutral-400">
-                Especializado en diversos estilos, desde realismo hasta
-                tradicional, me apasiona transformar tus ideas en arte
-                permanente que refleje tu personalidad y tu historia.
+                {about?.homePreviewText2 || "Especializado en diversos estilos, desde realismo hasta tradicional, me apasiona transformar tus ideas en arte permanente que refleje tu personalidad y tu historia."}
               </p>
               <Link
                 href="/sobre-mi"
                 className={cn(buttonVariants({ variant: "outline" }), "gap-2 border-brand-amber/30 text-brand-amber hover:bg-brand-amber/10")}
               >
-                Conocer mas
+                Conocer más
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

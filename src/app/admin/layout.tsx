@@ -23,11 +23,15 @@ import {
   Megaphone,
   ImageIcon,
   BarChart3,
+  Camera,
+  UserCircle,
 } from "lucide-react";
 
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/agenda", label: "Agenda", icon: Calendar },
+  { href: "/admin/portafolio", label: "Portafolio", icon: Camera },
+  { href: "/admin/sobre-mi", label: "Sobre mí", icon: UserCircle },
   { href: "/admin/categorias", label: "Categorías", icon: Tag },
   { href: "/admin/productos", label: "Productos", icon: Package },
   { href: "/admin/inventario", label: "Inventario", icon: BarChart3 },
