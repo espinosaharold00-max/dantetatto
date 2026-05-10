@@ -283,12 +283,13 @@ export default async function HomePage() {
           </div>
 
           <div className="grid items-center gap-8 md:grid-cols-2">
-            <div className="overflow-hidden rounded-2xl">
+            <div className="mx-auto max-w-xs overflow-hidden rounded-2xl">
               <Image
                 src="/images/ubicacion.jpeg"
                 alt="Ubicación del estudio Dante Tattoo"
-                width={235}
-                height={294}
+                width={800}
+                height={1000}
+                quality={90}
                 className="w-full rounded-2xl object-cover"
               />
             </div>
