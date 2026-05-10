@@ -245,7 +245,6 @@ export default function AgendaPage() {
                     onSelect={handleDateSelect}
                     disabled={(date) => date < new Date() || date.getDay() === 0}
                     locale={es}
-                    className="rounded-md border border-neutral-800"
                   />
                 </CardContent>
               </Card>
