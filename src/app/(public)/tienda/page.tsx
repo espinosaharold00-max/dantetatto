@@ -55,7 +55,7 @@ export default async function TiendaPage({
     <div className="min-h-screen text-brand-pink">
       <div className="bg-brand-pink py-12">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <Image src="/images/logo-polylove.png" alt="PolyLove" width={500} height={500} className="mx-auto mb-6 rounded-full shadow-2xl object-cover ring-4 ring-brand-dark/10" />
+          <Image src="/images/logo-polylove.png" alt="PolyLove" width={375} height={375} className="mx-auto mb-6 rounded-full shadow-2xl object-cover ring-4 ring-brand-dark/10" />
           <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-dark/70">
             タトゥー用品
           </p>
