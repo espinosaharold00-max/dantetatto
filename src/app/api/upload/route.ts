@@ -21,15 +21,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No se envió archivo" }, { status: 400 });
     }
 
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/avif"];
-    if (!allowedTypes.includes(file.type)) {
+    if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { error: "Tipo de archivo no permitido. Usa JPG, PNG o WebP." },
+        { error: "El archivo debe ser una imagen." },
         { status: 400 }
       );
     }
 
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const maxSize = 50 * 1024 * 1024; // 50MB
     if (file.size > maxSize) {
       return NextResponse.json(
         { error: "El archivo es muy grande. Máximo 10MB." },
