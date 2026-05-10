@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Star, ArrowRight, Calendar, ShoppingBag, Zap } from "lucide-react";
+import { Star, ArrowRight, Calendar, ShoppingBag, Zap, MapPin, Clock, Navigation } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
@@ -260,6 +260,91 @@ export default async function HomePage() {
                     </p>
                   </div>
                 ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ubicación */}
+      <section className="border-t border-neutral-800 bg-neutral-900 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <div className="mb-2 flex items-center justify-center gap-2">
+              <MapPin className="h-5 w-5 text-brand-amber" />
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-amber">
+                Ubicación
+              </span>
+            </div>
+            <h2 className="text-3xl font-black text-brand-cream sm:text-4xl">
+              Visítanos
+            </h2>
+            <p className="mt-2 text-neutral-400">
+              Te esperamos en nuestro estudio
+            </p>
+          </div>
+
+          <div className="grid items-center gap-8 md:grid-cols-2">
+            <div className="overflow-hidden rounded-2xl">
+              <Image
+                src="/images/ubicacion.jpeg"
+                alt="Ubicación del estudio Dante Tattoo"
+                width={800}
+                height={1000}
+                className="w-full rounded-2xl object-cover"
+              />
+            </div>
+
+            <div className="space-y-6">
+              <div className="rounded-xl border border-neutral-800 bg-neutral-950 p-6">
+                <div className="mb-4 flex items-start gap-4">
+                  <div className="rounded-full bg-brand-amber/10 p-3">
+                    <MapPin className="h-6 w-6 text-brand-amber" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-white">Dirección</h3>
+                    <p className="text-neutral-400">
+                      Calle 50, Edificio Embassy Club,<br />
+                      Planta Baja, Local 3<br />
+                      Bella Vista, Ciudad de Panamá
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mb-4 flex items-start gap-4">
+                  <div className="rounded-full bg-brand-amber/10 p-3">
+                    <Navigation className="h-6 w-6 text-brand-amber" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-white">Referencia</h3>
+                    <p className="text-neutral-400">
+                      Al lado de Mambo Pan y Café, frente a la entrada principal del edificio
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="rounded-full bg-brand-amber/10 p-3">
+                    <Clock className="h-6 w-6 text-brand-amber" />
+                  </div>
+                  <div>
+                    <h3 className="mb-1 text-lg font-bold text-white">Horario</h3>
+                    <p className="text-neutral-400">
+                      Lunes a Sábado: 10:00 AM — 7:00 PM<br />
+                      Domingo: Solo con cita previa
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <a
+                href="https://maps.app.goo.gl/FC6Fcyh74FUXmPBq6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ size: "lg" }), "w-full gap-2 bg-brand-amber text-brand-dark hover:bg-brand-amber-dark")}
+              >
+                <MapPin className="h-5 w-5" />
+                Abrir en Google Maps
+              </a>
+            </div>
           </div>
         </div>
       </section>
