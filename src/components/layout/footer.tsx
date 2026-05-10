@@ -89,12 +89,16 @@ export function Footer() {
               Contacto
             </h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-sm text-neutral-400">
-                <MapPin className="h-4 w-4 shrink-0 text-brand-amber" />
-                <span>
-                  {process.env.NEXT_PUBLIC_BUSINESS_ADDRESS ||
-                    "Panama City, PTY"}
-                </span>
+              <li className="flex items-start gap-2 text-sm text-neutral-400">
+                <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-brand-amber" />
+                <a
+                  href="https://maps.app.goo.gl/FC6Fcyh74FUXmPBq6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-brand-amber"
+                >
+                  Calle 50, Edif. Embassy Club, PB Local 3, Bella Vista, Panamá
+                </a>
               </li>
               <li className="flex items-center gap-2 text-sm text-neutral-400">
                 <Phone className="h-4 w-4 shrink-0 text-brand-amber" />

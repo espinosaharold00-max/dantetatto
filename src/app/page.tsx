@@ -282,7 +282,7 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="grid items-center gap-8 md:grid-cols-2">
+          <div className="grid items-center gap-4 md:grid-cols-2">
             <div className="mx-auto max-w-xs overflow-hidden rounded-2xl">
               <Image
                 src="/images/ubicacion.jpeg"
