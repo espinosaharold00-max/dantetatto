@@ -3,7 +3,7 @@ import Image from "next/image";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Star, ArrowRight, Calendar, ShoppingBag, Zap, MapPin, Clock, Navigation } from "lucide-react";
+import { Star, ArrowRight, Calendar, ShoppingBag, Zap, MapPin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
@@ -295,7 +295,7 @@ export default async function HomePage() {
 
             <div className="space-y-6">
               <div className="rounded-xl border border-neutral-800 bg-neutral-950 p-6">
-                <div className="mb-4 flex items-start gap-4">
+                <div className="flex items-start gap-4">
                   <div className="rounded-full bg-brand-amber/10 p-3">
                     <MapPin className="h-6 w-6 text-brand-amber" />
                   </div>
@@ -305,31 +305,6 @@ export default async function HomePage() {
                       Calle 50, Edificio Embassy Club,<br />
                       Planta Baja, Local 3<br />
                       Bella Vista, Ciudad de Panamá
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mb-4 flex items-start gap-4">
-                  <div className="rounded-full bg-brand-amber/10 p-3">
-                    <Navigation className="h-6 w-6 text-brand-amber" />
-                  </div>
-                  <div>
-                    <h3 className="mb-1 text-lg font-bold text-white">Referencia</h3>
-                    <p className="text-neutral-400">
-                      Al lado de Mambo Pan y Café, frente a la entrada principal del edificio
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="rounded-full bg-brand-amber/10 p-3">
-                    <Clock className="h-6 w-6 text-brand-amber" />
-                  </div>
-                  <div>
-                    <h3 className="mb-1 text-lg font-bold text-white">Horario</h3>
-                    <p className="text-neutral-400">
-                      Lunes a Sábado: 10:00 AM — 7:00 PM<br />
-                      Domingo: Solo con cita previa
                     </p>
                   </div>
                 </div>
