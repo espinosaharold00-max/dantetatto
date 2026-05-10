@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import ReactCrop, { type Crop, type PixelCrop } from "react-image-crop";
+import ReactCrop, {
+  type Crop,
+  type PixelCrop,
+  centerCrop,
+  makeAspectCrop,
+} from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Upload, Crop as CropIcon, Loader2 } from "lucide-react";
+import { Upload, Crop as CropIcon, Loader2, Move } from "lucide-react";
 
 interface ImageCropperProps {
   aspectRatio?: number;
@@ -76,34 +81,30 @@ export function ImageCropper({
 
   const onImageLoad = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
-      const { width, height } = e.currentTarget;
+      const { naturalWidth, naturalHeight, width, height } = e.currentTarget;
+      imgRef.current = e.currentTarget;
 
-      let cropWidth = width;
-      let cropHeight = width / aspectRatio;
+      const initialCrop = centerCrop(
+        makeAspectCrop(
+          { unit: "%", width: 70 },
+          aspectRatio,
+          naturalWidth,
+          naturalHeight
+        ),
+        naturalWidth,
+        naturalHeight
+      );
 
-      if (cropHeight > height) {
-        cropHeight = height;
-        cropWidth = height * aspectRatio;
-      }
+      setCrop(initialCrop);
 
-      cropWidth = Math.min(cropWidth, width);
-      cropHeight = Math.min(cropHeight, height);
-
-      const x = (width - cropWidth) / 2;
-      const y = (height - cropHeight) / 2;
-
-      const newCrop: Crop = {
-        unit: "px",
-        x,
-        y,
-        width: cropWidth,
-        height: cropHeight,
-      };
-
-      setCrop(newCrop);
+      const scaleX = naturalWidth / width;
+      const scaleY = naturalHeight / height;
       setCompletedCrop({
-        ...newCrop,
         unit: "px",
+        x: (initialCrop.x / 100) * width,
+        y: (initialCrop.y / 100) * height,
+        width: (initialCrop.width / 100) * width,
+        height: (initialCrop.height / 100) * height,
       });
     },
     [aspectRatio]
@@ -143,6 +144,52 @@ export function ImageCropper({
 
   return (
     <>
+      <style jsx global>{`
+        .ReactCrop {
+          position: relative;
+          display: inline-block;
+          cursor: crosshair;
+          overflow: hidden;
+        }
+        .ReactCrop__crop-selection {
+          position: absolute;
+          top: 0;
+          left: 0;
+          transform: translate3d(0, 0, 0);
+          cursor: move;
+          box-shadow: 0 0 0 9999em rgba(0, 0, 0, 0.5);
+          border: 2px solid #fff;
+          box-sizing: border-box;
+          touch-action: none;
+        }
+        .ReactCrop__drag-handle {
+          position: absolute;
+          width: 12px;
+          height: 12px;
+          background-color: #d4a843;
+          border: 2px solid #fff;
+          border-radius: 50%;
+          box-sizing: border-box;
+        }
+        .ReactCrop__drag-handle.ord-nw { top: -6px; left: -6px; cursor: nw-resize; }
+        .ReactCrop__drag-handle.ord-n { top: -6px; left: 50%; margin-left: -6px; cursor: n-resize; }
+        .ReactCrop__drag-handle.ord-ne { top: -6px; right: -6px; cursor: ne-resize; }
+        .ReactCrop__drag-handle.ord-e { top: 50%; right: -6px; margin-top: -6px; cursor: e-resize; }
+        .ReactCrop__drag-handle.ord-se { bottom: -6px; right: -6px; cursor: se-resize; }
+        .ReactCrop__drag-handle.ord-s { bottom: -6px; left: 50%; margin-left: -6px; cursor: s-resize; }
+        .ReactCrop__drag-handle.ord-sw { bottom: -6px; left: -6px; cursor: sw-resize; }
+        .ReactCrop__drag-handle.ord-w { top: 50%; left: -6px; margin-top: -6px; cursor: w-resize; }
+        .ReactCrop__rule-of-thirds-vt::before,
+        .ReactCrop__rule-of-thirds-vt::after,
+        .ReactCrop__rule-of-thirds-hz::before,
+        .ReactCrop__rule-of-thirds-hz::after {
+          content: '';
+          display: block;
+          position: absolute;
+          background-color: rgba(255,255,255,0.3);
+        }
+      `}</style>
+
       <div className="flex items-center gap-4">
         {currentImage && (
           <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-neutral-700">
@@ -175,9 +222,10 @@ export function ImageCropper({
             </DialogTitle>
           </DialogHeader>
 
-          <p className="text-sm text-neutral-400">
-            Ajusta el recorte para mantener una proporción uniforme.
-          </p>
+          <div className="flex items-center gap-2 rounded-lg bg-brand-amber/10 p-3 text-sm text-brand-amber">
+            <Move className="h-4 w-4 shrink-0" />
+            Arrastra y redimensiona el recuadro para ajustar el recorte.
+          </div>
 
           {imageSrc && (
             <div className="mt-2 flex justify-center">
@@ -186,14 +234,14 @@ export function ImageCropper({
                 onChange={(c) => setCrop(c)}
                 onComplete={(c) => setCompletedCrop(c)}
                 aspect={aspectRatio}
-                className="max-h-[60vh]"
+                ruleOfThirds
               >
                 <img
                   ref={imgRef}
                   src={imageSrc}
                   alt="Recortar"
                   onLoad={onImageLoad}
-                  style={{ maxHeight: "60vh" }}
+                  style={{ maxHeight: "55vh", maxWidth: "100%" }}
                 />
               </ReactCrop>
             </div>
