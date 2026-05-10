@@ -76,42 +76,36 @@ export default async function HomePage() {
       <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-brand-amber">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
-        <div className="relative z-10 mx-auto max-w-6xl px-4">
-          <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
-            <div className="shrink-0">
-              <Image src="/images/logo.png" alt="Dante Tattoo" width={350} height={350} className="rounded-full shadow-2xl ring-4 ring-brand-dark/10" priority />
-            </div>
-            <div className="text-center md:text-left">
-              <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
-                Since 2017
-              </p>
-              <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
-                DANTE TATTOO
-              </h1>
-              <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/80 sm:text-xl">
-                Estudio de Tatuaje
-              </p>
-              <p className="mb-10 mt-6 max-w-xl text-lg text-brand-dark/80">
-                Haciendo amigos, no clientes. Cada tatuaje cuenta una historia.
-                Trabajamos contigo para crear piezas unicas que llevaras con orgullo.
-              </p>
-              <div className="flex flex-col items-center gap-4 sm:flex-row md:items-start">
-                <Link
-                  href="/agenda"
-                  className={cn(buttonVariants({ size: "lg" }), "gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90")}
-                >
-                  <Calendar className="h-5 w-5" />
-                  Agendar cita
-                </Link>
-                <Link
-                  href="/tienda"
-                  className={cn(buttonVariants({ size: "lg", variant: "outline" }), "gap-2 border-brand-dark/30 text-brand-dark hover:bg-brand-dark/10")}
-                >
-                  <ShoppingBag className="h-5 w-5" />
-                  Tienda
-                </Link>
-              </div>
-            </div>
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          <Image src="/images/logo.png" alt="Dante Tattoo" width={500} height={500} className="mx-auto mb-6 rounded-full shadow-2xl ring-4 ring-brand-dark/10" priority />
+          <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
+            Since 2017
+          </p>
+          <h1 className="mb-2 text-6xl font-black tracking-tight text-brand-dark sm:text-8xl">
+            DANTE TATTOO
+          </h1>
+          <p className="mb-2 text-lg font-medium uppercase tracking-[0.2em] text-brand-dark/80 sm:text-xl">
+            Estudio de Tatuaje
+          </p>
+          <p className="mx-auto mb-10 mt-6 max-w-xl text-lg text-brand-dark/80">
+            Haciendo amigos, no clientes. Cada tatuaje cuenta una historia.
+            Trabajamos contigo para crear piezas unicas que llevaras con orgullo.
+          </p>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/agenda"
+              className={cn(buttonVariants({ size: "lg" }), "gap-2 bg-brand-dark text-brand-amber hover:bg-brand-dark/90")}
+            >
+              <Calendar className="h-5 w-5" />
+              Agendar cita
+            </Link>
+            <Link
+              href="/tienda"
+              className={cn(buttonVariants({ size: "lg", variant: "outline" }), "gap-2 border-brand-dark/30 text-brand-dark hover:bg-brand-dark/10")}
+            >
+              <ShoppingBag className="h-5 w-5" />
+              Tienda
+            </Link>
           </div>
         </div>
       </section>
