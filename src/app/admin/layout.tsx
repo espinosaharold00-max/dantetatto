@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
@@ -18,13 +19,21 @@ import {
   Menu,
   X,
   ExternalLink,
+  Tag,
+  Megaphone,
+  ImageIcon,
+  BarChart3,
 } from "lucide-react";
 
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/agenda", label: "Agenda", icon: Calendar },
+  { href: "/admin/categorias", label: "Categorías", icon: Tag },
   { href: "/admin/productos", label: "Productos", icon: Package },
+  { href: "/admin/inventario", label: "Inventario", icon: BarChart3 },
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingCart },
+  { href: "/admin/promociones", label: "Promociones", icon: Megaphone },
+  { href: "/admin/banners", label: "Banners", icon: ImageIcon },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/resenas", label: "Reseñas", icon: Star },
   { href: "/admin/clientes", label: "Clientes", icon: Users },
@@ -56,7 +65,10 @@ export default function AdminLayout({
         }`}
       >
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-neutral-800 px-4">
-          <span className="text-lg font-bold text-white">Admin</span>
+          <div className="flex items-center gap-2">
+            <Image src="/images/logo.png" alt="Dante Tattoo" width={28} height={28} className="rounded-full" />
+            <span className="text-lg font-bold text-brand-amber">Admin</span>
+          </div>
           <button
             className="text-neutral-400 hover:text-white lg:hidden"
             onClick={() => setSidebarOpen(false)}

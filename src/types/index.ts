@@ -26,7 +26,7 @@ export type PaymentSummary = {
 
 export type OrderWithItems = Order & {
   items: (OrderItem & { product: Product })[];
-  user: Pick<User, "id" | "name" | "email">;
+  user: Pick<User, "id" | "name" | "email"> & { phone?: string | null };
 };
 
 export type ReviewWithUser = Review & {

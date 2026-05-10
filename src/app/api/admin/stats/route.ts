@@ -22,25 +22,24 @@ export async function GET() {
     cancelledAppointments,
     pendingAppointments,
     ordersThisMonth,
+    pendingOrders,
     revenue,
     totalClients,
     pendingReviews,
     topProducts,
+    allProducts,
+    activePromotions,
+    activeBanners,
+    lowStockCount,
   ] = await Promise.all([
     prisma.appointment.count({
       where: { date: { gte: monthStart, lte: monthEnd } },
     }),
     prisma.appointment.count({
-      where: {
-        date: { gte: monthStart, lte: monthEnd },
-        status: "COMPLETED",
-      },
+      where: { date: { gte: monthStart, lte: monthEnd }, status: "COMPLETED" },
     }),
     prisma.appointment.count({
-      where: {
-        date: { gte: monthStart, lte: monthEnd },
-        status: "CANCELLED",
-      },
+      where: { date: { gte: monthStart, lte: monthEnd }, status: "CANCELLED" },
     }),
     prisma.appointment.count({ where: { status: "PENDING" } }),
     prisma.order.count({
@@ -49,6 +48,7 @@ export async function GET() {
         status: { in: ["PAID", "SHIPPED", "DELIVERED"] },
       },
     }),
+    prisma.order.count({ where: { status: "PENDING" } }),
     prisma.order.aggregate({
       _sum: { total: true },
       where: {
@@ -64,12 +64,32 @@ export async function GET() {
       orderBy: { _sum: { quantity: "desc" } },
       take: 5,
     }),
+    prisma.product.findMany({
+      where: { isActive: true },
+      select: { price: true, costPrice: true, stock: true },
+    }),
+    prisma.promotion.count({
+      where: { isActive: true, endDate: { gte: now } },
+    }),
+    prisma.banner.count({ where: { isActive: true } }),
+    prisma.product.count({
+      where: { isActive: true, stock: { lte: 5 } },
+    }),
   ]);
 
   const topProductDetails = await prisma.product.findMany({
     where: { id: { in: topProducts.map((p) => p.productId) } },
     select: { id: true, name: true, price: true },
   });
+
+  const inventoryValue = allProducts.reduce(
+    (sum, p) => sum + (p.costPrice || 0) * p.stock,
+    0
+  );
+  const retailValue = allProducts.reduce(
+    (sum, p) => sum + p.price * p.stock,
+    0
+  );
 
   return NextResponse.json({
     appointments: {
@@ -84,10 +104,19 @@ export async function GET() {
     },
     orders: {
       total: ordersThisMonth,
+      pending: pendingOrders,
       revenue: revenue._sum.total || 0,
     },
     clients: totalClients,
     pendingReviews,
+    inventory: {
+      investmentValue: inventoryValue,
+      retailValue: retailValue,
+      potentialProfit: retailValue - inventoryValue,
+      lowStockCount,
+    },
+    activePromotions,
+    activeBanners,
     topProducts: topProducts.map((tp) => {
       const product = topProductDetails.find((p) => p.id === tp.productId);
       return {

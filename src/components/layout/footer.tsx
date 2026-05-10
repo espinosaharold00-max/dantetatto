@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { MapPin, Phone, Mail } from "lucide-react";
 
@@ -18,7 +19,10 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
+            <div className="flex items-center gap-2">
+              <Image src="/images/logo.png" alt="Dante Tattoo" width={40} height={40} className="rounded-full" />
+              <h3 className="text-lg font-bold text-brand-amber">DANTE TATTOO</h3>
+            </div>
             <p className="mt-3 text-sm text-neutral-400">
               Haciendo amigos, no clientes.
             </p>
@@ -59,9 +63,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-3 text-sm font-semibold uppercase text-brand-pink">
-              Poly Love
-            </h4>
+            <div className="mb-3 flex items-center gap-2">
+              <Image src="/images/logo-polylove.png" alt="Poly Love" width={28} height={28} className="rounded-full" />
+              <h4 className="text-sm font-semibold uppercase text-brand-pink">
+                Poly Love
+              </h4>
+            </div>
             <p className="mb-2 text-xs text-neutral-400">Tattoo After Care</p>
             <ul className="space-y-2">
               {["Cremas", "Protectores", "Jabones", "Kits"].map((cat) => (

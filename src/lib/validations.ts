@@ -30,10 +30,14 @@ export const productSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
   description: z.string().min(1, "La descripción es requerida"),
   price: z.number().positive("El precio debe ser mayor a 0"),
+  compareAtPrice: z.number().positive().nullable().optional(),
+  costPrice: z.number().positive().nullable().optional(),
   category: z.string().min(1, "La categoría es requerida"),
+  categoryId: z.string().optional(),
   stock: z.number().int().min(0),
   images: z.array(z.string()).optional(),
   isActive: z.boolean().optional(),
+  isFeatured: z.boolean().optional(),
 });
 
 export const reviewSchema = z.object({

@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -124,7 +125,8 @@ export default function VerifyPage() {
       <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
         <CardHeader className="text-center">
           <Link href="/" className="mb-2 block">
-            <span className="text-2xl font-black text-brand-amber">DANTE TATTOO</span>
+            <Image src="/images/logo.png" alt="Dante Tattoo" width={56} height={56} className="mx-auto rounded-full" />
+            <span className="mt-2 text-2xl font-black text-brand-amber">DANTE TATTOO</span>
             <span className="mt-0.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-400">Estudio de Tatuaje</span>
           </Link>
           <CardTitle className="text-lg text-neutral-300">

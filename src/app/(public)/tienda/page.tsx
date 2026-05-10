@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,25 +25,37 @@ async function getProducts(category?: string) {
   }
 }
 
-const categories = [
-  { value: "", label: "Todos" },
-  { value: "cremas", label: "Cremas" },
-  { value: "jabones", label: "Jabones" },
-  { value: "protectores", label: "Protectores" },
-  { value: "kits", label: "Kits" },
-];
+async function getCategories() {
+  try {
+    return await prisma.category.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+    });
+  } catch {
+    return [];
+  }
+}
 
 export default async function TiendaPage({
   searchParams,
 }: {
   searchParams: { category?: string };
 }) {
-  const products = await getProducts(searchParams.category);
+  const [products, dbCategories] = await Promise.all([
+    getProducts(searchParams.category),
+    getCategories(),
+  ]);
+
+  const categories = [
+    { value: "", label: "Todos" },
+    ...dbCategories.map((c) => ({ value: c.slug, label: c.name })),
+  ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-brand-pink">
       <div className="bg-brand-pink py-12">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <Image src="/images/logo-polylove.png" alt="Poly Love" width={80} height={80} className="mx-auto mb-3 rounded-full shadow-lg" />
           <p className="mb-1 text-xs font-bold uppercase tracking-[0.2em] text-brand-dark/70">
             タトゥー用品
           </p>
@@ -112,18 +125,25 @@ export default async function TiendaPage({
                     )}
                   </div>
                   <CardContent className="p-4">
-                    <Badge
-                      variant="outline"
-                      className="mb-2 border-brand-pink/30 text-xs text-brand-pink"
-                    >
-                      {product.category}
-                    </Badge>
+                    <div className="mb-2 flex items-center gap-2">
+                      <Badge
+                        variant="outline"
+                        className="border-brand-pink/30 text-xs text-brand-pink"
+                      >
+                        {product.category}
+                      </Badge>
+                      {product.isFeatured && (
+                        <Badge className="bg-brand-amber text-xs text-brand-dark">
+                          Destacado
+                        </Badge>
+                      )}
+                    </div>
                     <h3 className="mb-1 font-semibold text-white">
                       {product.name}
                     </h3>
                     <div className="flex items-center gap-2">
                       <span className="text-lg font-bold text-brand-pink">
-                        ${(product.price / 100).toFixed(2)}
+                        USD ${(product.price / 100).toFixed(2)}
                       </span>
                       {product.compareAtPrice && (
                         <span className="text-sm text-neutral-400 line-through">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -76,6 +77,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-amber-light/40 via-transparent to-brand-amber-dark/30" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-dark to-transparent" />
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
+          <Image src="/images/logo.png" alt="Dante Tattoo" width={120} height={120} className="mx-auto mb-4 rounded-full shadow-2xl" priority />
           <p className="mb-4 text-sm font-bold uppercase tracking-[0.3em] text-brand-dark/80">
             Since 2017
           </p>
