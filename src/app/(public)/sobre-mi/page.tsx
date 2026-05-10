@@ -52,7 +52,7 @@ export default async function SobreMiPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid items-start gap-12 md:grid-cols-2">
-        <div className="sticky top-24">
+        <div className="md:sticky md:top-24">
           <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-neutral-800">
             {artistPhotoUrl ? (
               <img
