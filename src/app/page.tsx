@@ -7,6 +7,7 @@ import { Star, ArrowRight, Calendar, ShoppingBag, Zap, MapPin } from "lucide-rea
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
+import { PortfolioGallery } from "@/components/portfolio-gallery";
 
 export const dynamic = "force-dynamic";
 
@@ -131,32 +132,22 @@ export default async function HomePage() {
             </p>
           </div>
 
-          <div className="columns-2 gap-4 sm:columns-3 lg:columns-4">
-            {portfolioItems.length > 0
-              ? portfolioItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="mb-4 break-inside-avoid overflow-hidden rounded-lg"
-                  >
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full object-cover transition-transform duration-300 hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                ))
-              : Array.from({ length: 8 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg border border-neutral-800 bg-neutral-900"
-                  >
-                    <span className="text-sm text-neutral-400">
-                      Portfolio {i + 1}
-                    </span>
-                  </div>
-                ))}
-          </div>
+          {portfolioItems.length > 0 ? (
+            <PortfolioGallery items={portfolioItems} />
+          ) : (
+            <div className="columns-2 gap-4 sm:columns-3 lg:columns-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="mb-4 flex aspect-[3/4] items-center justify-center break-inside-avoid rounded-lg border border-neutral-800 bg-neutral-900"
+                >
+                  <span className="text-sm text-neutral-400">
+                    Portfolio {i + 1}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
