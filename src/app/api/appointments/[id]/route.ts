@@ -55,16 +55,34 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   const session = await auth();
-  if (
-    !session?.user ||
-    (session.user.role !== "ADMIN" && session.user.role !== "STAFF")
-  ) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  if (!session?.user) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
+
+  const isAdmin = session.user.role === "ADMIN" || session.user.role === "STAFF";
 
   try {
     const body = await req.json();
     const { status, adminNotes } = body;
+
+    if (!isAdmin) {
+      if (status !== "CANCELLED" || adminNotes !== undefined) {
+        return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+      }
+      const existing = await prisma.appointment.findUnique({
+        where: { id: params.id },
+        select: { userId: true, status: true },
+      });
+      if (!existing || existing.userId !== session.user.id) {
+        return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+      }
+      if (existing.status === "COMPLETED" || existing.status === "CANCELLED") {
+        return NextResponse.json(
+          { error: "No se puede cancelar esta cita" },
+          { status: 400 }
+        );
+      }
+    }
 
     const updateData: Record<string, unknown> = {};
     if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
@@ -99,6 +117,30 @@ export async function PATCH(
     console.error("Error updating appointment:", error);
     return NextResponse.json(
       { error: "Error al actualizar la cita" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await auth();
+  if (
+    !session?.user ||
+    (session.user.role !== "ADMIN" && session.user.role !== "STAFF")
+  ) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
+  try {
+    await prisma.appointment.delete({ where: { id: params.id } });
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Error deleting appointment:", error);
+    return NextResponse.json(
+      { error: "Error al eliminar la cita" },
       { status: 500 }
     );
   }

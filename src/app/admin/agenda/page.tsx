@@ -9,6 +9,7 @@ import {
   Clock,
   User,
   MessageCircle,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -141,6 +142,19 @@ export default function AdminAgendaPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ adminNotes: notes }),
       });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteAppointment = async (id: string) => {
+    if (!confirm("¿Estás seguro de que deseas eliminar esta cita? Esta acción no se puede deshacer.")) return;
+    try {
+      const res = await fetch(`/api/appointments/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setAppointments((prev) => prev.filter((a) => a.id !== id));
+        setSelectedAppointment(null);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -333,6 +347,15 @@ export default function AdminAgendaPage() {
                       Cancelar
                     </Button>
                   )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => deleteAppointment(selectedAppointment.id)}
+                    className="border-red-700/30 text-red-500 hover:bg-red-700/20"
+                  >
+                    <Trash2 className="mr-1 h-3 w-3" />
+                    Eliminar
+                  </Button>
                 </div>
               </div>
 

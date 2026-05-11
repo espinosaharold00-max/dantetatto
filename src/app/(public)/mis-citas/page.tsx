@@ -13,6 +13,8 @@ import {
   ChevronUp,
   CreditCard,
   CalendarPlus,
+  MessageCircle,
+  XCircle,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -163,8 +165,18 @@ function PaymentHistory({ payments }: { payments: Payment[] }) {
   );
 }
 
-function AppointmentCard({ appointment }: { appointment: Appointment }) {
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+
+function AppointmentCard({
+  appointment,
+  onCancel,
+}: {
+  appointment: Appointment;
+  onCancel: (id: string) => void;
+}) {
   const status = statusConfig[appointment.status];
+  const canCancel =
+    appointment.status === "PENDING" || appointment.status === "CONFIRMED";
 
   return (
     <Card className="border-neutral-800 bg-neutral-900">
@@ -217,6 +229,37 @@ function AppointmentCard({ appointment }: { appointment: Appointment }) {
 
         {/* Payment history (expandable) */}
         <PaymentHistory payments={appointment.payments} />
+
+        {/* Actions */}
+        <div className="flex flex-wrap gap-2 border-t border-neutral-800 pt-3">
+          {whatsappNumber && (
+            <a
+              href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+                `Hola, tengo una consulta sobre mi cita del ${format(new Date(appointment.date), "d 'de' MMMM", { locale: es })}.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({ size: "sm", variant: "outline" }),
+                "border-green-600/30 text-green-400 hover:bg-green-600/10"
+              )}
+            >
+              <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
+              WhatsApp
+            </a>
+          )}
+          {canCancel && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onCancel(appointment.id)}
+              className="border-red-500/30 text-red-400 hover:bg-red-500/10"
+            >
+              <XCircle className="mr-1.5 h-3.5 w-3.5" />
+              Cancelar cita
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
@@ -231,6 +274,26 @@ export default function MisCitasPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const cancelAppointment = async (id: string) => {
+    if (!confirm("¿Estás seguro de que deseas cancelar esta cita?")) return;
+    try {
+      const res = await fetch(`/api/appointments/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "CANCELLED" }),
+      });
+      if (res.ok) {
+        setAppointments((prev) =>
+          prev.map((a) =>
+            a.id === id ? { ...a, status: "CANCELLED" as const } : a
+          )
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     if (authStatus !== "authenticated") return;
@@ -351,7 +414,7 @@ export default function MisCitasPage() {
       {!loading && !error && appointments.length > 0 && (
         <div className="space-y-4">
           {appointments.map((appt) => (
-            <AppointmentCard key={appt.id} appointment={appt} />
+            <AppointmentCard key={appt.id} appointment={appt} onCancel={cancelAppointment} />
           ))}
         </div>
       )}
