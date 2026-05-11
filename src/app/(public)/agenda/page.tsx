@@ -363,7 +363,8 @@ export default function AgendaPage() {
                     <Label htmlFor="name" className="text-white">Nombre completo</Label>
                     <Input
                       id="name"
-                      {...form.register("name")}
+                      value={form.watch("name")}
+                      onChange={(e) => form.setValue("name", e.target.value)}
                       className="border-neutral-700 bg-neutral-800"
                     />
                     {fieldErrors.name && (
@@ -377,7 +378,8 @@ export default function AgendaPage() {
                     <Input
                       id="email"
                       type="email"
-                      {...form.register("email")}
+                      value={form.watch("email")}
+                      onChange={(e) => form.setValue("email", e.target.value)}
                       className="border-neutral-700 bg-neutral-800"
                     />
                     {fieldErrors.email && (
@@ -393,7 +395,8 @@ export default function AgendaPage() {
                     <Label htmlFor="phone" className="text-white">Teléfono</Label>
                     <Input
                       id="phone"
-                      {...form.register("phone")}
+                      value={form.watch("phone")}
+                      onChange={(e) => form.setValue("phone", e.target.value)}
                       className="border-neutral-700 bg-neutral-800"
                     />
                     {fieldErrors.phone && (
@@ -433,7 +436,8 @@ export default function AgendaPage() {
                   </Label>
                   <Textarea
                     id="description"
-                    {...form.register("description")}
+                    value={form.watch("description")}
+                    onChange={(e) => form.setValue("description", e.target.value)}
                     rows={4}
                     placeholder="Cuéntanos qué tienes en mente: estilo, tamaño, referencias..."
                     className="border-neutral-700 bg-neutral-800"
