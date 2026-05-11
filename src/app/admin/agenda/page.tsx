@@ -8,17 +8,10 @@ import {
   ChevronRight,
   Clock,
   User,
-  MoreVertical,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -286,46 +279,12 @@ export default function AdminAgendaPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant="outline"
-                      className={statusColors[apt.status]}
-                    >
-                      {statusLabels[apt.status]}
-                    </Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="h-8 w-8" onClick={(e) => e.stopPropagation()} />}>
-                          <MoreVertical className="h-4 w-4" />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            updateStatus(apt.id, "CONFIRMED");
-                          }}
-                        >
-                          Confirmar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            updateStatus(apt.id, "COMPLETED");
-                          }}
-                        >
-                          Completar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            updateStatus(apt.id, "CANCELLED");
-                          }}
-                          className="text-red-400"
-                        >
-                          Cancelar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
+                  <Badge
+                    variant="outline"
+                    className={statusColors[apt.status]}
+                  >
+                    {statusLabels[apt.status]}
+                  </Badge>
                 </CardContent>
               </Card>
             ))
@@ -338,6 +297,44 @@ export default function AdminAgendaPage() {
               <CardTitle className="text-white">Detalle de cita</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Estado y acciones */}
+              <div>
+                <p className="mb-2 text-xs uppercase text-neutral-400">Estado</p>
+                <Badge variant="outline" className={`mb-3 ${statusColors[selectedAppointment.status]}`}>
+                  {statusLabels[selectedAppointment.status]}
+                </Badge>
+                <div className="flex flex-wrap gap-2">
+                  {selectedAppointment.status !== "CONFIRMED" && (
+                    <Button
+                      size="sm"
+                      onClick={() => updateStatus(selectedAppointment.id, "CONFIRMED")}
+                      className="bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                      Confirmar cita
+                    </Button>
+                  )}
+                  {selectedAppointment.status !== "COMPLETED" && (
+                    <Button
+                      size="sm"
+                      onClick={() => updateStatus(selectedAppointment.id, "COMPLETED")}
+                      className="bg-green-600 text-white hover:bg-green-700"
+                    >
+                      Completar
+                    </Button>
+                  )}
+                  {selectedAppointment.status !== "CANCELLED" && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => updateStatus(selectedAppointment.id, "CANCELLED")}
+                      className="border-red-500/30 text-red-400 hover:bg-red-500/10"
+                    >
+                      Cancelar
+                    </Button>
+                  )}
+                </div>
+              </div>
+
               <div>
                 <p className="text-xs uppercase text-neutral-400">Cliente</p>
                 <p className="font-medium text-white">
