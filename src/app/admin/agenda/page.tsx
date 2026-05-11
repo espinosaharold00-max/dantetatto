@@ -33,6 +33,12 @@ import { formatCOP } from "@/lib/format";
 import type { AppointmentWithUser } from "@/types";
 import type { AppointmentPayment } from "@prisma/client";
 
+function formatUTC(date: Date | string, fmt: string) {
+  const d = new Date(date);
+  const utc = new Date(d.getTime() + d.getTimezoneOffset() * 60000);
+  return format(utc, fmt, { locale: es });
+}
+
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
   CONFIRMED: "bg-blue-500/10 text-blue-500 border-blue-500/20",
@@ -258,10 +264,10 @@ export default function AdminAgendaPage() {
                   <div className="flex items-center gap-4">
                     <div className="text-center">
                       <p className="text-xs text-neutral-400">
-                        {format(new Date(apt.date), "EEE", { locale: es })}
+                        {formatUTC(apt.date, "EEE")}
                       </p>
                       <p className="text-lg font-bold text-white">
-                        {format(new Date(apt.date), "d")}
+                        {formatUTC(apt.date, "d")}
                       </p>
                     </div>
                     <div>
@@ -273,8 +279,8 @@ export default function AdminAgendaPage() {
                       </div>
                       <div className="flex items-center gap-2 text-sm text-neutral-400">
                         <Clock className="h-3 w-3" />
-                        {format(new Date(apt.startTime), "HH:mm")} —{" "}
-                        {format(new Date(apt.endTime), "HH:mm")}
+                        {formatUTC(apt.startTime, "HH:mm")} —{" "}
+                        {formatUTC(apt.endTime, "HH:mm")}
                         <span className="text-neutral-400">•</span>
                         {typeLabels[apt.type]}
                       </div>
@@ -584,11 +590,7 @@ export default function AdminAgendaPage() {
                                 {formatCOP(p.amount)}
                               </p>
                               <p className="text-xs text-neutral-400">
-                                {format(
-                                  new Date(p.createdAt),
-                                  "d MMM yyyy, HH:mm",
-                                  { locale: es }
-                                )}
+                                {formatUTC(p.createdAt, "d MMM yyyy, HH:mm")}
                               </p>
                             </div>
                             <Badge
