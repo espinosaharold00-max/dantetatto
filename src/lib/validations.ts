@@ -1,15 +1,15 @@
 import { z } from "zod";
 
 export const appointmentSchema = z.object({
-  type: z.enum(["CONSULTATION", "CONTINUATION", "TOUCH_UP"]),
-  date: z.string().min(1, "La fecha es requerida"),
-  startTime: z.string().min(1, "La hora es requerida"),
-  description: z.string().min(10, "Describe tu diseño (mínimo 10 caracteres)"),
-  bodyArea: z.string().min(1, "La zona del cuerpo es requerida"),
+  type: z.enum(["CONSULTATION", "CONTINUATION", "TOUCH_UP"], { message: "Selecciona un tipo de cita" }),
+  date: z.string({ message: "La fecha es requerida" }).min(1, "La fecha es requerida"),
+  startTime: z.string({ message: "La hora es requerida" }).min(1, "La hora es requerida"),
+  description: z.string({ message: "La descripción es requerida" }).min(10, "Describe tu diseño (mínimo 10 caracteres)"),
+  bodyArea: z.string({ message: "La zona del cuerpo es requerida" }).min(1, "La zona del cuerpo es requerida"),
   referenceImageUrl: z.string().optional(),
-  name: z.string().min(2, "El nombre es requerido"),
-  email: z.string().email("Email inválido"),
-  phone: z.string().min(8, "Teléfono inválido"),
+  name: z.string({ message: "El nombre es requerido" }).min(2, "El nombre es requerido"),
+  email: z.string({ message: "El email es requerido" }).email("Email inválido"),
+  phone: z.string({ message: "El teléfono es requerido" }).min(8, "Teléfono inválido"),
 });
 
 export const registerSchema = z.object({

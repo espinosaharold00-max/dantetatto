@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Calendar as CalendarIcon, Clock, CheckCircle } from "lucide-react";
@@ -69,7 +68,6 @@ export default function AgendaPage() {
   const [loadingSlots, setLoadingSlots] = useState(false);
 
   const form = useForm<AppointmentInput>({
-    resolver: zodResolver(appointmentSchema),
     defaultValues: {
       type: undefined,
       date: "",
@@ -112,15 +110,49 @@ export default function AgendaPage() {
   };
 
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const onSubmit = async (data: AppointmentInput) => {
+  const validateFields = (fields?: (keyof AppointmentInput)[]) => {
+    const values = form.getValues();
+    const result = appointmentSchema.safeParse(values);
+    if (result.success) {
+      setFieldErrors({});
+      return true;
+    }
+    const issues = result.error.issues;
+    const newErrors: Record<string, string> = {};
+    for (const issue of issues) {
+      const field = String(issue.path[0]);
+      if (!fields || fields.includes(field as keyof AppointmentInput)) {
+        newErrors[field] = issue.message;
+      }
+    }
+    setFieldErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmitForm = async () => {
     setLoading(true);
     setSubmitError(null);
+    const values = form.getValues();
+    const result = appointmentSchema.safeParse(values);
+    if (!result.success) {
+      setStep("info");
+      setSubmitError("Por favor completa todos los campos correctamente.");
+      const issues = result.error.issues;
+      const newErrors: Record<string, string> = {};
+      for (const issue of issues) {
+        newErrors[String(issue.path[0])] = issue.message;
+      }
+      setFieldErrors(newErrors);
+      setLoading(false);
+      return;
+    }
     try {
       const res = await fetch("/api/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(result.data),
       });
 
       if (res.ok) {
@@ -188,10 +220,7 @@ export default function AgendaPage() {
           </CardContent>
         </Card>
       ) : (
-        <form onSubmit={form.handleSubmit(onSubmit, () => {
-          setStep("info");
-          setSubmitError("Por favor completa todos los campos correctamente.");
-        })}>
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmitForm(); }}>
           {/* Step 1: Tipo de cita */}
           {step === "type" && (
             <div className="grid gap-4 sm:grid-cols-3">
@@ -337,9 +366,9 @@ export default function AgendaPage() {
                       {...form.register("name")}
                       className="border-neutral-700 bg-neutral-800"
                     />
-                    {form.formState.errors.name && (
+                    {fieldErrors.name && (
                       <p className="mt-1 text-sm text-red-400">
-                        {form.formState.errors.name.message}
+                        {fieldErrors.name}
                       </p>
                     )}
                   </div>
@@ -351,9 +380,9 @@ export default function AgendaPage() {
                       {...form.register("email")}
                       className="border-neutral-700 bg-neutral-800"
                     />
-                    {form.formState.errors.email && (
+                    {fieldErrors.email && (
                       <p className="mt-1 text-sm text-red-400">
-                        {form.formState.errors.email.message}
+                        {fieldErrors.email}
                       </p>
                     )}
                   </div>
@@ -367,9 +396,9 @@ export default function AgendaPage() {
                       {...form.register("phone")}
                       className="border-neutral-700 bg-neutral-800"
                     />
-                    {form.formState.errors.phone && (
+                    {fieldErrors.phone && (
                       <p className="mt-1 text-sm text-red-400">
-                        {form.formState.errors.phone.message}
+                        {fieldErrors.phone}
                       </p>
                     )}
                   </div>
@@ -390,9 +419,9 @@ export default function AgendaPage() {
                         ))}
                       </SelectContent>
                     </Select>
-                    {form.formState.errors.bodyArea && (
+                    {fieldErrors.bodyArea && (
                       <p className="mt-1 text-sm text-red-400">
-                        {form.formState.errors.bodyArea.message}
+                        {fieldErrors.bodyArea}
                       </p>
                     )}
                   </div>
@@ -409,9 +438,9 @@ export default function AgendaPage() {
                     placeholder="Cuéntanos qué tienes en mente: estilo, tamaño, referencias..."
                     className="border-neutral-700 bg-neutral-800"
                   />
-                  {form.formState.errors.description && (
+                  {fieldErrors.description && (
                     <p className="mt-1 text-sm text-red-400">
-                      {form.formState.errors.description.message}
+                      {fieldErrors.description}
                     </p>
                   )}
                 </div>
@@ -427,9 +456,8 @@ export default function AgendaPage() {
                   </Button>
                   <Button
                     type="button"
-                    onClick={async () => {
-                      const valid = await form.trigger(["name", "email", "phone", "bodyArea", "description"]);
-                      if (valid) {
+                    onClick={() => {
+                      if (validateFields(["name", "email", "phone", "bodyArea", "description"])) {
                         setSubmitError(null);
                         setStep("confirm");
                       }
