@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { appointmentSchema, type AppointmentInput } from "@/lib/validations";
+import { countryCodes } from "@/lib/country-codes";
 import type { TimeSlot } from "@/types";
 
 const appointmentTypes = [
@@ -66,6 +67,7 @@ export default function AgendaPage() {
   const [selectedSlot, setSelectedSlot] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [countryCode, setCountryCode] = useState("+507");
 
   const form = useForm<AppointmentInput>({
     defaultValues: {
@@ -112,8 +114,14 @@ export default function AgendaPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const validateFields = (fields?: (keyof AppointmentInput)[]) => {
+  const getValuesWithFullPhone = () => {
     const values = form.getValues();
+    const rawPhone = values.phone || "";
+    return { ...values, phone: rawPhone ? `${countryCode}${rawPhone}` : "" };
+  };
+
+  const validateFields = (fields?: (keyof AppointmentInput)[]) => {
+    const values = getValuesWithFullPhone();
     const result = appointmentSchema.safeParse(values);
     if (result.success) {
       setFieldErrors({});
@@ -134,7 +142,7 @@ export default function AgendaPage() {
   const handleSubmitForm = async () => {
     setLoading(true);
     setSubmitError(null);
-    const values = form.getValues();
+    const values = getValuesWithFullPhone();
     const result = appointmentSchema.safeParse(values);
     if (!result.success) {
       setStep("info");
@@ -393,12 +401,27 @@ export default function AgendaPage() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="phone" className="text-white">Teléfono</Label>
-                    <Input
-                      id="phone"
-                      value={form.watch("phone")}
-                      onChange={(e) => form.setValue("phone", e.target.value)}
-                      className="border-neutral-700 bg-neutral-800"
-                    />
+                    <div className="flex gap-2">
+                      <Select value={countryCode} onValueChange={(v) => { if (v) setCountryCode(v); }}>
+                        <SelectTrigger className="w-[130px] shrink-0 border-neutral-700 bg-neutral-800">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countryCodes.map((c) => (
+                            <SelectItem key={c.code} value={c.code}>
+                              {c.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        id="phone"
+                        value={form.watch("phone")}
+                        onChange={(e) => form.setValue("phone", e.target.value.replace(/\D/g, ""))}
+                        placeholder="62535086"
+                        className="border-neutral-700 bg-neutral-800"
+                      />
+                    </div>
                     {fieldErrors.phone && (
                       <p className="mt-1 text-sm text-red-400">
                         {fieldErrors.phone}
@@ -534,7 +557,7 @@ export default function AgendaPage() {
                   </p>
                   <p className="text-white">{form.getValues("name")}</p>
                   <p className="text-sm text-neutral-400">
-                    {form.getValues("email")} • {form.getValues("phone")}
+                    {form.getValues("email")} • {countryCode} {form.getValues("phone")}
                   </p>
                 </div>
 

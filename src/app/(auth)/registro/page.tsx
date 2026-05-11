@@ -10,11 +10,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { countryCodes } from "@/lib/country-codes";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [countryCode, setCountryCode] = useState("+507");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +58,7 @@ export default function RegisterPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, phone: phone || undefined }),
+        body: JSON.stringify({ name, email, password, phone: phone ? `${countryCode}${phone}` : undefined }),
       });
 
       if (!res.ok) {
@@ -120,11 +129,26 @@ export default function RegisterPage() {
 
             <div>
               <Label htmlFor="phone">Teléfono (opcional)</Label>
-              <Input
-                id="phone"
-                name="phone"
-                className="border-neutral-700 bg-neutral-800"
-              />
+              <div className="flex gap-2">
+                <Select value={countryCode} onValueChange={(v) => { if (v) setCountryCode(v); }}>
+                  <SelectTrigger className="w-[130px] shrink-0 border-neutral-700 bg-neutral-800">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {countryCodes.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Input
+                  id="phone"
+                  name="phone"
+                  placeholder="62535086"
+                  className="border-neutral-700 bg-neutral-800"
+                />
+              </div>
             </div>
 
             <div>

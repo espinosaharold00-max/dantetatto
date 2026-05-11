@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
   User,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -344,9 +345,20 @@ export default function AdminAgendaPage() {
                   {selectedAppointment.user.email}
                 </p>
                 {selectedAppointment.user.phone && (
-                  <p className="text-sm text-neutral-400">
-                    {selectedAppointment.user.phone}
-                  </p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <p className="text-sm text-neutral-400">
+                      {selectedAppointment.user.phone}
+                    </p>
+                    <a
+                      href={`https://wa.me/${selectedAppointment.user.phone.replace(/[^0-9]/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-white transition-colors hover:bg-green-700"
+                    >
+                      <MessageCircle className="h-3 w-3" />
+                      WhatsApp
+                    </a>
+                  </div>
                 )}
               </div>
 
