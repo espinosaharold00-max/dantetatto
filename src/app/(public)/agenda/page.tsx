@@ -101,18 +101,21 @@ export default function AgendaPage() {
     if (!date) return;
     setSelectedDate(date);
     setSelectedSlot(undefined);
-    form.setValue("date", format(date, "yyyy-MM-dd"));
+    form.setValue("date", format(date, "yyyy-MM-dd"), { shouldValidate: true });
     fetchSlots(date);
   };
 
   const handleSlotSelect = (slot: TimeSlot) => {
     if (!slot.available) return;
     setSelectedSlot(slot.startTime);
-    form.setValue("startTime", slot.startTime);
+    form.setValue("startTime", slot.startTime, { shouldValidate: true });
   };
+
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const onSubmit = async (data: AppointmentInput) => {
     setLoading(true);
+    setSubmitError(null);
     try {
       const res = await fetch("/api/appointments", {
         method: "POST",
@@ -124,10 +127,10 @@ export default function AgendaPage() {
         setStep("success");
       } else {
         const error = await res.json();
-        alert(error.error || "Error al crear la cita");
+        setSubmitError(error.error || "Error al crear la cita");
       }
     } catch {
-      alert("Error de conexión");
+      setSubmitError("Error de conexión. Intenta de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -185,7 +188,10 @@ export default function AgendaPage() {
           </CardContent>
         </Card>
       ) : (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit, () => {
+          setStep("info");
+          setSubmitError("Por favor completa todos los campos correctamente.");
+        })}>
           {/* Step 1: Tipo de cita */}
           {step === "type" && (
             <div className="grid gap-4 sm:grid-cols-3">
@@ -198,7 +204,7 @@ export default function AgendaPage() {
                       : ""
                   }`}
                   onClick={() => {
-                    form.setValue("type", type.value as AppointmentInput["type"]);
+                    form.setValue("type", type.value as AppointmentInput["type"], { shouldValidate: true });
                   }}
                 >
                   <CardHeader>
@@ -370,7 +376,8 @@ export default function AgendaPage() {
                   <div>
                     <Label htmlFor="bodyArea" className="text-white">Zona del cuerpo</Label>
                     <Select
-                      onValueChange={(v: string | null) => { if (v) form.setValue("bodyArea", v); }}
+                      value={form.watch("bodyArea") || undefined}
+                      onValueChange={(v) => { if (v) form.setValue("bodyArea", v, { shouldValidate: true }); }}
                     >
                       <SelectTrigger className="border-neutral-700 bg-neutral-800">
                         <SelectValue placeholder="Selecciona la zona" />
@@ -420,18 +427,11 @@ export default function AgendaPage() {
                   </Button>
                   <Button
                     type="button"
-                    onClick={() => {
-                      const values = form.getValues();
-                      if (
-                        values.name &&
-                        values.email &&
-                        values.phone &&
-                        values.bodyArea &&
-                        values.description
-                      ) {
+                    onClick={async () => {
+                      const valid = await form.trigger(["name", "email", "phone", "bodyArea", "description"]);
+                      if (valid) {
+                        setSubmitError(null);
                         setStep("confirm");
-                      } else {
-                        form.trigger();
                       }
                     }}
                     className="bg-brand-amber text-brand-dark hover:bg-brand-amber-dark"
@@ -505,6 +505,12 @@ export default function AgendaPage() {
                     {form.getValues("email")} • {form.getValues("phone")}
                   </p>
                 </div>
+
+                {submitError && (
+                  <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
+                    {submitError}
+                  </div>
+                )}
 
                 <div className="flex justify-between pt-4">
                   <Button

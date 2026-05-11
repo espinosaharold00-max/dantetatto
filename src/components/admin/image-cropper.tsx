@@ -62,7 +62,7 @@ export function ImageCropper({
   const [crop, setCrop] = useState<Crop>();
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
   const [uploading, setUploading] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const onFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,8 +97,6 @@ export function ImageCropper({
 
       setCrop(initialCrop);
 
-      const scaleX = naturalWidth / width;
-      const scaleY = naturalHeight / height;
       setCompletedCrop({
         unit: "px",
         x: (initialCrop.x / 100) * width,

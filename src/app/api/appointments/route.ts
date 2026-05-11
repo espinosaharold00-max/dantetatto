@@ -105,8 +105,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(appointment, { status: 201 });
   } catch (error) {
     if (error instanceof Error && error.name === "ZodError") {
+      const zodError = error as unknown as { issues: { path: string[]; message: string }[] };
+      const fieldErrors = zodError.issues
+        ?.map((i) => `${i.path.join(".")}: ${i.message}`)
+        .join(", ");
       return NextResponse.json(
-        { error: "Datos inválidos", details: error },
+        { error: fieldErrors || "Datos inválidos" },
         { status: 400 }
       );
     }
